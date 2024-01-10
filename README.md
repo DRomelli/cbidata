@@ -1,2 +1,2 @@
-# cbidata
-Central Bank Independence Website
+# Data on Central Bank Independence
+
