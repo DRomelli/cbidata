@@ -61,28 +61,26 @@
                 <h2>Data</h2>
                 <p>Download the latest version of the dataset.</p>
 
-                <div style=" text-align: center;">
-
-                    <a href="javascript:void(0);" onclick="downloadFile()">
-                        <button class="btn btn-warning" type="button" style="margin-right: 10px; padding: 6px 30px;">STATA</button>
-                    </a>
-                    
-                    <script>
-                        function downloadFile() {
-                            var link = document.createElement('a');
-                            link.href = 'https://raw.githubusercontent.com/DRomelli/cbidata/main/dataset/CBIData_Romelli_2024.dta';
-                            link.download = 'CBIData_Romelli_2024.dta';
-                            document.body.appendChild(link);
-                            link.click();
-                            document.body.removeChild(link);
-                        }
-                    </script>
-
-                    <a href="javascript:void(0);" onclick="downloadFile('https://raw.githubusercontent.com/DRomelli/cbidata/main/dataset/CBIData_Romelli_2024.xlsx', 'CBIData_Romelli_2024.xlsx')">
-                        <button class="btn btn-outline-light" type="button" style="margin-left: 10px;padding: 6px 30px;">EXCEL</button>
-                    </a>
-                    
-                </div>
+                <div style="display: flex;">
+            <a href="javascript:void(0);" onclick="downloadFile('https://raw.githubusercontent.com/DRomelli/cbidata/main/dataset/CBIData_Romelli_2024.dta', 'CBIData_Romelli_2024.dta')">
+                <button class="btn btn-warning" type="button" style="margin-right: 10px; padding: 6px 30px;">STATA</button>
+            </a>
+            <a href="javascript:void(0);" onclick="downloadFile('https://raw.githubusercontent.com/DRomelli/cbidata/main/dataset/CBIData_Romelli_2024.xlsx', 'CBIData_Romelli_2024.xlsx')">
+                <button class="btn btn-warning" type="button" style="margin-right: 10px; padding: 6px 30px;">EXCEL</button>
+            </a>
+        </div>
+        
+        <script>
+            function downloadFile(url, filename) {
+                var link = document.createElement('a');
+                link.href = url;
+                link.download = filename;
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+            }
+        </script>
+                
             </div>
             </div>
 
