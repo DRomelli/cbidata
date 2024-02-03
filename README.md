@@ -12,4 +12,4 @@ The repository consists of the following components:
   
 - [Legislations](https://github.com/DRomelli/cbidata/tree/main/legislations)) is a folder that contains the central bank legislations analyzed for the creation of the indices of central bank independence.
 
-See also the website [https://dromelli.github.io/CBIE_Index/index.html](https://dromelli.github.io/CBIE_Index/index.html), where these data can be easily downloaded. 
+See also the website [https://dromelli.github.io/cbidata/index.html](https://dromelli.github.io/cbidata/index.html), where these data can be easily downloaded. 
