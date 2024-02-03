@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CB Laws</title>
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" crossorigin="anonymous">
+    <link href="https://unpkg.com/bootstrap-table@1.20.2/dist/bootstrap-table.min.css" rel="stylesheet">
+
+    <link rel="stylesheet" href="css/main.css">
+
+</head> 
+<body>
+
+    <!--- Nav ---> 
+    <nav class="navbar navbar-expand-lg" aria-label="Fifth navbar example">
+        <div class="container-fluid">
+          <a class="navbar-brand  fw-bold" href="/CBIE_Index/index.html">  CBI data & <span style="color: #0569b9;"> </br>Legislations </span> </a>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation" style="border: 0;">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+    
+          <div class="collapse navbar-collapse" id="navbar">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+
+              <li class="nav-item">
+                <a class="nav-link" aria-current="page" href="/CBIE_Index/index.html">Home</a>
+              </li>
+
+              <li class="nav-item">
+                <a class="nav-link active" href="/CBIE_Index/legislations.html">Legislations</a>
+              </li>
+
+              <li class="nav-item">
+                <a class="nav-link" href="/CBIE_Index/vintages.html">Vintages</a>
+              </li>
+                
+            </ul>
+            
+          </div>
+        </div>
+      </nav>
+      
+      <!--- Title ---> 
+      <div class="mb-4  rounded-3">
+        <div class="container-fluid py-3">
+                
+          <h1 class="col-md-10 display-6 fw-bold" style="color: #0569b9;">Central Bank Legislations Database</h1>
+    
+        </div>
+      </div>
+        
+        <!--- Database URL --->
+      <div> 
+        <div class="col-md-14" style="border-bottom: solid 3px #0569b9; padding-bottom: 0.5em;">
+            <h2>Legislations</h2>
+            <p class="text-muted">English* refers to documents whose original text has been translated to English using Google Translate.</p>
+        </div>  
+            <!--- Table ---> 
+            <div style="overflow-x:auto;">
+                <table id="table"
+              class="table  table-bordered table-hover"
+              data-toggle="table"
+              data-url="/CBIE_Index/Legislations/legislations_list.json"
+              data-pagination="true"
+              data-search="true"
+              data-page-size= "25"
+              data-page-list="[25, 50, 100, 200, All]">
+              <thead  >
+                <tr>
+                  <th data-sortable="true" data-field="Country / Institution">Country/Institution</th>
+                  <th data-sortable="true" data-field="Year-Month">Year-Month</th>
+                  <th data-sortable="true" data-field="Type">Type</th>
+                  <th  data-field="Title">Title</th>
+                  <th data-sortable="true" data-field="Language">Language</th>
+                  <th  data-field="Link">pdf</th>
+                </tr>
+              </thead>
+        
+                </table>
+              </div>
+        </div>
+
+
+        <!--- Footer --->
+        <div class="container">
+            <footer class="py-3 my-4 border-top">
+                <div class="row">
+                    <div class="col text-center">
+                        <a href="/" class="mb-3 me-2 mb-md-0 text-muted text-decoration-none lh-1">
+                            <svg class="bi" width="30" height="24"><use xlink:href="#bootstrap"></use></svg>
+                        </a>
+                        <p class="text-muted">Data © Davide Romelli. The code and data are freely available for academic research and personal non-commercial use. Any other use, including redistribution, requires prior consent under copyright protection.</p>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col d-flex justify-content-center">
+                        <ul class="list-unstyled d-flex">
+                            <li class="ms-3"><a class="text-muted" href="#"><svg class="bi" width="24" height="24"><use xlink:href="#twitter"></use></svg></a></li>
+                            <li class="ms-3"><a class="text-muted" href="#"><svg class="bi" width="24" height="24"><use xlink:href="#instagram"></use></svg></a></li>
+                            <li class="ms-3"><a class="text-muted" href="#"><svg class="bi" width="24" height="24"><use xlink:href="#facebook"></use></svg></a></li>
+                        </ul>
+                    </div>
+                </div>
+            </footer>
+        </div>
+
+        
+        <!--- Scripts ---> 
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/5.0.0-alpha1/js/bootstrap.min.js" integrity="sha384-oesi62hOLfzrys4LxRF63OJCXdXDipiYWBnvTl9Y9/TRlw5xlKIEHpNyvvDShgf/" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-pprn3073KE6tl6bjs2QrFaJGz5/SUsLqktiwsUTF55Jfv3qYSDhgCecCxMW52nD2" crossorigin="anonymous"></script>
+        <script src="https://unpkg.com/bootstrap-table@1.20.2/dist/bootstrap-table.min.js"></script>
+
+       
+        </body>
+        </html>
