@@ -4,4 +4,4 @@ This repository contains the various vintages of the data on the CBIE index in R
 
 When you use the index and its associated data, please acknowledge the following papers as the data sources:
 - Romelli, D., 2022. [The political economy of reforms in central bank design: evidence from a new dataset](https://doi.org/10.1093/epolic/eiac011). Economic Policy, 37(112), pp. 641-688.
-- Romelli, D., 2024. Trends in central bank independence: a de-jure perspective.
+- Romelli, D., 2024. [Trends in central bank independence: a de-jure perspective](https://papers.ssrn.com/sol3/papers.cfm?abstract_id=4716704). BAFFI CAREFIN Centre Research Paper No. 217.
