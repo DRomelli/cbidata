@@ -1,11 +1,11 @@
 # Central Bank Legislations Database
 
-This repository contains the central bank legislations analyzed for the creation of the indices of central bank independence in Romelli (<a style="color:#0569b9;" href="https://academic.oup.com/economicpolicy/advance-article/doi/10.1093/epolic/eiac011/6516019" target="_blank" rel="noopener">2022</a>, 2024).
+This repository contains the central bank legislations analyzed for the creation of the indices of central bank independence in Romelli (<a style="color:#0569b9;" href="https://academic.oup.com/economicpolicy/advance-article/doi/10.1093/epolic/eiac011/6516019" target="_blank" rel="noopener">2022</a>, <a style="color:#0569b9;" href="https://papers.ssrn.com/sol3/papers.cfm?abstract_id=4716704" target="_blank" rel="noopener noreferrer">2024</a>).
 
 Please cite these papers if you are using these legislations:
 
 - Romelli, D., 2022. [The political economy of reforms in central bank design: evidence from a new dataset](https://doi.org/10.1093/epolic/eiac011). Economic Policy, 37(112), pp. 641-688.
-- Romelli, D., 2024. [Trends in central bank independence](https://TEP_LINK). Trinity Economic Papers (TEP), Working Paper No. 1123.
+- Romelli, D., 2024. <a style="color:#0569b9;" href="https://papers.ssrn.com/sol3/papers.cfm?abstract_id=4716704" target="_blank" rel="noopener noreferrer">Trends in central bank independence: a de-jure perspective</a>. BAFFI CAREFIN Centre Research Paper No. 217.
 
 
 ## Notes on file names:
