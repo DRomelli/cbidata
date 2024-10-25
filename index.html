@@ -64,23 +64,22 @@
         </div>
       </div>
       
-      <!--- Data & Doc section ---> 
-      <div class="row align-items-md-stretch">
+        <!--- Data & Doc section ---> 
+        <div class="row align-items-md-stretch">
             <!--- Data Block ---> 
-            <div class="col-md-6" style = "margin-bottom: 1.5em;">
-            <div class="h-100 text-white p-5 rounded-3" style="background-color: #0569b9;">
-                <h2>Data</h2>
-                <p>Download the latest version of the dataset.</p>
+            <div class="col-md-6" style="margin-bottom: 1.5em;">
+                <div class="h-100 text-white p-5 rounded-3" style="background-color: #0569b9;">
+                    <h2>Data</h2>
+                    <p>Download the latest version of the dataset.</p>
 
-                <div style="display: flex;">
-                    <a href="javascript:void(0);" onclick="downloadFile('https://cbidata.org/dataset/CBIData_Romelli_2024.dta', 'CBIData_Romelli_2024.dta')">
-                        <button class="btn btn-warning" type="button" style="margin-right: 10px; padding: 6px 30px;">STATA</button>
-                    </a>
-                    <a href="javascript:void(0);" onclick="downloadFile('https://cbidata.org/dataset/CBIData_Romelli_2024.xlsx', 'CBIData_Romelli_2024.xlsx')">
-                        <button class="btn btn-warning" type="button" style="margin-right: 10px; padding: 6px 30px;">EXCEL</button>
-                    </a>
+                    <div style="display: flex;">
+                        <button class="btn btn-warning" type="button" onclick="downloadFile('https://cbidata.org/dataset/CBIData_Romelli_2024.dta', 'CBIData_Romelli_2024.dta')" style="margin-right: 10px; padding: 6px 30px;">STATA</button>
+                        <button class="btn btn-warning" type="button" onclick="downloadFile('https://cbidata.org/dataset/CBIData_Romelli_2024.xlsx', 'CBIData_Romelli_2024.xlsx')" style="margin-right: 10px; padding: 6px 30px;">EXCEL</button>
+                    </div>
                 </div>
-        
+            </div>
+        </div>
+
         <script>
             function downloadFile(url, filename) {
                 var link = document.createElement('a');
@@ -91,10 +90,7 @@
                 document.body.removeChild(link);
             }
         </script>
-            
-                            
-            </div>
-            </div>
+
 
             <!--- Codebook Block ---> 
             <div class="col-md-6" style = "margin-bottom: 1.5em;">
