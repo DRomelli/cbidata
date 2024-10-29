@@ -64,51 +64,46 @@
         </div>
       </div>
       
-        <!--- Data & Doc section ---> 
-        <div class="row align-items-md-stretch">
-            <!--- Data Block ---> 
-            <div class="col-md-6" style="margin-bottom: 1.5em;">
-                <div class="h-100 text-white p-5 rounded-3" style="background-color: #0569b9;">
-                    <h2>Data</h2>
-                    <p>Download the latest version of the dataset.</p>
-
-                    <div style="display: flex;">
-                        <button class="btn btn-warning" type="button" onclick="downloadFile('https://cbidata.org/dataset/CBIData_Romelli_2024.dta', 'CBIData_Romelli_2024.dta')" style="margin-right: 10px; padding: 6px 30px;">STATA</button>
-                        <button class="btn btn-warning" type="button" onclick="downloadFile('https://cbidata.org/dataset/CBIData_Romelli_2024.xlsx', 'CBIData_Romelli_2024.xlsx')" style="margin-right: 10px; padding: 6px 30px;">EXCEL</button>
-                    </div>
+    <!--- Data & Doc section ---> 
+    <div class="row align-items-md-stretch">
+        <!--- Data Block ---> 
+        <div class="col-md-6" style="margin-bottom: 1.5em;">
+            <div class="h-100 text-white p-5 rounded-3" style="background-color: #0569b9;">
+                <h2>Data</h2>
+                <p>Download the latest version of the dataset.</p>
+    
+                <div style="display: flex;">
+                    <button class="btn btn-warning" type="button" onclick="downloadFile('https://cbidata.org/dataset/CBIData_Romelli_2024.dta', 'CBIData_Romelli_2024.dta')" style="margin-right: 10px; padding: 6px 30px;">STATA</button>
+                    <button class="btn btn-warning" type="button" onclick="downloadFile('https://cbidata.org/dataset/CBIData_Romelli_2024.xlsx', 'CBIData_Romelli_2024.xlsx')" style="margin-right: 10px; padding: 6px 30px;">EXCEL</button>
                 </div>
             </div>
         </div>
-
-        <script>
-            function downloadFile(url, filename) {
-                var link = document.createElement('a');
-                link.href = url;
-                link.download = filename;
-                document.body.appendChild(link);
-                link.click();
-                document.body.removeChild(link);
-            }
-        </script>
-
-
-            <!--- Codebook Block ---> 
-            <div class="col-md-6" style = "margin-bottom: 1.5em;">
+    
+        <!--- Codebook Block ---> 
+        <div class="col-md-6" style="margin-bottom: 1.5em;">
             <div class="h-100 p-5 text-black rounded-3" style="background-color: #eeeeef;">
                 <h2>Codebook</h2>
-                <p>For a detailed description of the construction of this dataset download the codebook below.  </p>
-
+                <p>For a detailed description of the construction of this dataset download the codebook below.</p>
+    
                 <div style="text-align: center;">
-
                     <a href="https://cbidata.org/dataset/CBIData_Romelli_2024_Codebook.pdf">
-                    <button class="btn btn-outline-dark" type="button" style="text-align: center;">Codebook</button>
+                        <button class="btn btn-outline-dark" type="button" style="text-align: center;">Codebook</button>
                     </a>
-                                        
                 </div>
             </div>
-            </div>
-
-      </div>
+        </div>
+    </div>
+    
+    <script>
+        function downloadFile(url, filename) {
+            var link = document.createElement('a');
+            link.href = url;
+            link.download = filename;
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        }
+    </script>
 
     <!--- How to Cite Section --->
 <div class="mb-4 rounded-3" style="background-color: #eeeeef; margin-top: 2%;">
