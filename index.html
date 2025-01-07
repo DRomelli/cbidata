@@ -105,12 +105,11 @@
         }
     </script>
 
-    <!--- How to Cite Section --->
+<!--- How to Cite Section --->
 <div class="mb-4 rounded-3" style="background-color: #eeeeef; margin-top: 2%;">
-    <div class="container-fluid py-3" >
+    <div class="container-fluid py-3">
 
         <h2 class="col-md-6" style="margin-bottom: 1em;">Citations</h2>
-
         <p class="col-md-14 fs-5"> When using this data, please cite: </p>
         
         <div style="padding: 0 50px;">
@@ -138,53 +137,145 @@
                     </strong> 
                     <em> BAFFI CAREFIN Centre Research Paper No. 217.</em>
                 </li>
-                <!-- Add more <li> elements here for additional bullet points -->
             </ul>
         </div>
-                
-        <!-- Button to toggle dropdown -->
-        <div style="padding: 0 40px ;">
-        <button onclick="toggleDropdown()" class="btn btn-primary">BibTeX</button>
-        </div>
-            
-        <!-- Dropdown Content -->
-        <div id="dropdownContent" style="display: none; padding: 20px; margin-top: 0; background-color: #eeeeef; border-radius: 5px; white-space: pre-wrap; monospace; line-height: 1">
-            @article{romelli2022political,
-            title={The political economy of reforms in Central Bank design: Evidence from a new dataset},
-            author={Romelli, Davide},
-            journal={Economic Policy},
-            volume={37},
-            number={112},
-            pages={641--688},
-            year={2022},
-            publisher={Oxford University Press}
-            }
-        
-        <br>
-            
-            @article{romelli2024,
-            title={Trends in central bank independence: a de-jure perspective},
-            author={Romelli, Davide},
-            year={2024},
-            journal={BAFFI CAREFIN Centre Research Paper No. 217}
-            }
-        </div>
 
-
-    
+        <!-- Button to open modal -->
+        <div style="padding: 0 40px;">
+            <button onclick="openModal()" class="btn btn-primary">BibTeX</button>
+        </div>
     </div>
 </div>
 
+<!-- Modal for BibTeX citation -->
+<div id="bibtexModal" class="modal" style="display: none;">
+    <div class="modal-content">
+        <span class="close" onclick="closeModal()">&times;</span>
+        <h4 style="text-align: center;">BibTeX Citations</h4>
+        
+        <!-- First BibTeX entry -->
+        <div style="margin-bottom: 15px;">
+            <h5>1. The Political Economy of Reforms in Central Bank Design (2022)</h5>
+            <pre id="bibtexEntry1" style="white-space: pre-wrap; font-family: monospace; background-color: #f7f7f7; padding: 15px; border-radius: 5px;">
+@article{romelli2022political,
+  title={The political economy of reforms in Central Bank design: Evidence from a new dataset},
+  author={Romelli, Davide},
+  journal={Economic Policy},
+  volume={37},
+  number={112},
+  pages={641--688},
+  year={2022},
+  publisher={Oxford University Press}
+}
+            </pre>
+            <div style="text-align: center;">
+                <button class="btn btn-secondary" onclick="copyToClipboard('bibtexEntry1')">Copy</button>
+                <button class="btn btn-secondary" onclick="downloadBibTeX('The_Political_Economy_of_Reforms_2022', 'bibtexEntry1')">Download</button>
+            </div>
+        </div>
+
+        <!-- Second BibTeX entry -->
+        <div>
+            <h5>2. Trends in Central Bank Independence (2024)</h5>
+            <pre id="bibtexEntry2" style="white-space: pre-wrap; font-family: monospace; background-color: #f7f7f7; padding: 15px; border-radius: 5px;">
+@article{romelli2024,
+  title={Trends in central bank independence: a de-jure perspective},
+  author={Romelli, Davide},
+  year={2024},
+  journal={BAFFI CAREFIN Centre Research Paper No. 217}
+}
+            </pre>
+            <div style="text-align: center;">
+                <button class="btn btn-secondary" onclick="copyToClipboard('bibtexEntry2')">Copy</button>
+                <button class="btn btn-secondary" onclick="downloadBibTeX('Trends_in_CBI_2024', 'bibtexEntry2')">Download</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- CSS for modal -->
+<style>
+    .modal {
+        position: fixed;
+        z-index: 9999;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        overflow: auto;
+        background-color: rgba(0, 0, 0, 0.4);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .modal-content {
+        background-color: white;
+        padding: 20px;
+        border-radius: 10px;
+        width: 90%;
+        max-width: 600px;
+        box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+    }
+
+    .close {
+        float: right;
+        font-size: 28px;
+        font-weight: bold;
+        cursor: pointer;
+    }
+
+    .close:hover,
+    .close:focus {
+        color: red;
+    }
+
+    .btn {
+        margin: 5px;
+    }
+</style>
+
+<!-- JavaScript for modal and buttons -->
 <script>
-    function toggleDropdown() {
-        var dropdown = document.getElementById("dropdownContent");
-        if (dropdown.style.display === "none") {
-            dropdown.style.display = "block";
-        } else {
-            dropdown.style.display = "none";
+    function openModal() {
+        document.getElementById('bibtexModal').style.display = 'flex';
+    }
+
+    function closeModal() {
+        document.getElementById('bibtexModal').style.display = 'none';
+    }
+
+    // Close modal when clicking outside of it
+    window.onclick = function(event) {
+        var modal = document.getElementById('bibtexModal');
+        if (event.target === modal) {
+            closeModal();
         }
+    };
+
+    // Copy BibTeX content to clipboard
+    function copyToClipboard(elementId) {
+        var bibtexContent = document.getElementById(elementId).textContent.trim();
+        navigator.clipboard.writeText(bibtexContent).then(function () {
+            alert('BibTeX citation copied to clipboard!');
+        }, function () {
+            alert('Failed to copy citation.');
+        });
+    }
+
+    // Download BibTeX content as a .bib file
+    function downloadBibTeX(filename, elementId) {
+        var bibtexContent = document.getElementById(elementId).textContent.trim();
+        var blob = new Blob([bibtexContent], { type: 'text/plain;charset=utf-8' });
+        var link = document.createElement('a');
+        link.href = URL.createObjectURL(blob);
+        link.download = filename + '.bib';
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
     }
 </script>
+
 
       <!--Info Section-->
         <div style="padding: 5% 0; ">
