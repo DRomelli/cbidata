@@ -70,28 +70,20 @@
       <h2 class="col-md-8" style=" border-bottom: solid 3px #0569b9; padding-bottom: 0.5em; margin-bottom: 1em;">Lastest version - 2024 Update</h2>
 
       <p>
+        The latest version of the database has benefitted from the feedback of many researchers (some of them mentioned on the <a style="color:#0569b9;" href="https://cbidata.org/acknowledgements" target="_blank" rel="noopener">acknowledgements</a> page), who have helped refine and improve the index and fix some typos.
+      </p>
+    
+      <p>
           The latest version of the database can be downloaded here: 
 
         <div style="display: flex;">
-            <a href="javascript:void(0);" onclick="downloadFile('https://cbidata.org/dataset/CBIData_Romelli_2024.dta', 'CBIData_Romelli_2024.dta')">
+            <a href="javascript:void(0);" onclick="downloadFile('https://cbidata.org/dataset/CBIData_Romelli_2025.dta', 'CBIData_Romelli_2024.dta')">
                 <button class="btn btn-warning" type="button" style="margin-right: 10px; padding: 6px 30px;">STATA</button>
             </a>
-            <a href="javascript:void(0);" onclick="downloadFile('https://cbidata.org/dataset/CBIData_Romelli_2024.xlsx', 'CBIData_Romelli_2024.xlsx')">
+            <a href="javascript:void(0);" onclick="downloadFile('https://cbidata.org/dataset/CBIData_Romelli_2025.xlsx', 'CBIData_Romelli_2024.xlsx')">
                 <button class="btn btn-warning" type="button" style="margin-right: 10px; padding: 6px 30px;">EXCEL</button>
             </a>
         </div>
-        
-        <script>
-            function downloadFile(url, filename) {
-                var link = document.createElement('a');
-                link.href = url;
-                link.download = filename;
-                document.body.appendChild(link);
-                link.click();
-                document.body.removeChild(link);
-            }
-        </script>
-
       </p>
 
     <div>
@@ -107,6 +99,21 @@
       </p>
     </div>
 
+      <h2 class="col-md-8" style=" border-bottom: solid 3px #0569b9; padding-bottom: 0.5em; margin-bottom: 1em; margin-top: 2em;">February 2024 Update</h2>
+
+      <p>
+          The version of the database created in February 2024 and used in Romelli (<a style="color:#0569b9;" href="https://papers.ssrn.com/sol3/papers.cfm?abstract_id=4716704" target="_blank" rel="noopener">2024</a>) can be downloaded here:
+
+        <div style="display: flex;">
+            <a href="javascript:void(0);" onclick="downloadFile('https://cbidata.org/dataset/CBIData_Romelli_Feb2024.dta', 'CBIData_Romelli_Feb2024.dta')">
+                <button class="btn btn-warning" type="button" style="margin-right: 10px; padding: 6px 30px;">STATA</button>
+            </a>
+            <a href="javascript:void(0);" onclick="downloadFile('https://cbidata.org/dataset/CBIData_Romelli_Feb2024.xlsx', 'CBIData_Romelli_Feb2024.xlsx')">
+                <button class="btn btn-warning" type="button" style="margin-right: 10px; padding: 6px 30px;">EXCEL</button>
+            </a>
+        </div>
+      </p>
+
       <h2 class="col-md-8" style=" border-bottom: solid 3px #0569b9; padding-bottom: 0.5em; margin-bottom: 1em; margin-top: 2em;">Dataset Version 1.0 - Economic Policy (2022)</h2>
 
       <p>
@@ -120,18 +127,6 @@
                 <button class="btn btn-warning" type="button" style="margin-right: 10px; padding: 6px 30px;">EXCEL</button>
             </a>
         </div>
-        
-        <script>
-            function downloadFile(url, filename) {
-                var link = document.createElement('a');
-                link.href = url;
-                link.download = filename;
-                document.body.appendChild(link);
-                link.click();
-                document.body.removeChild(link);
-            }
-        </script>
-
       </p>
     
      <p>
@@ -143,6 +138,18 @@
      <p>
           The data on central bank independence are also available in the <a style="color:#0569b9;" href="https://datafinder.qog.gu.se/dataset/cbie" target="_blank" rel="noopener">Quality of Government (QoG) Dataset</a>.
       </p> 
+
+      <script>
+          function downloadFile(url, filename) {
+              var link = document.createElement('a');
+              link.href = url;
+              link.download = filename;
+              document.body.appendChild(link);
+              link.click();
+              document.body.removeChild(link);
+          }
+      </script>
+
 
       <!--- Footer ---> 
         <div class="container">
