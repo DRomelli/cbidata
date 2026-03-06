@@ -106,6 +106,12 @@
         .grid line { stroke: #eee; }
         .grid .domain { display: none; }
         .axis text { font-size: 11px; }
+
+        /* Embed mode — hide chrome when loaded inside an iframe */
+        .is-embedded nav,
+        .is-embedded .embed-hide { display: none !important; }
+        .is-embedded body { padding: 0 !important; }
+        .is-embedded .container-fluid { padding-left: 8px !important; padding-right: 8px !important; }
     </style>
 </head>
 
@@ -119,6 +125,11 @@
 </script>
 
 <body>
+
+<script>
+  if (new URLSearchParams(location.search).has("embed"))
+    document.documentElement.classList.add("is-embedded");
+</script>
 
 <!--- Nav --->
 <nav class="navbar navbar-expand-lg" aria-label="Main navigation">
@@ -141,8 +152,8 @@
 
 <div class="container-fluid py-3">
 
-    <h1 class="display-6 fw-bold" style="color: #0569b9;">CBI Data Mapper</h1>
-    <p class="fs-5 text-muted mb-3">Explore central bank independence across countries and over time. Click a country to view its historical trend.</p>
+    <h1 class="display-6 fw-bold embed-hide" style="color: #0569b9;">CBI Data Mapper</h1>
+    <p class="fs-5 text-muted mb-3 embed-hide">Explore central bank independence across countries and over time. Click a country to view its historical trend.</p>
 
     <!--- Controls --->
     <div id="controls">
@@ -209,7 +220,7 @@
 </div>
 
 <!--- Footer --->
-<div class="container">
+<div class="container embed-hide">
     <footer class="py-3 my-4 border-top">
         <div class="row">
             <div class="col text-center">
