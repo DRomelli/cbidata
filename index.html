@@ -108,7 +108,7 @@
     </style>
 
     <script>
-    // Lightweight preview map (static, 2023, CBIE Index)
+    // Preview map: draw world immediately, then apply CBI colors when data loads
     (function() {
       const A3_TO_NUM = {
         AFG:"004",ALB:"008",DZA:"012",AND:"020",AGO:"024",ATG:"028",AZE:"031",
@@ -139,46 +139,51 @@
         URY:"858",UZB:"860",VEN:"862",YEM:"887",ZMB:"894"
       };
       const NUM_TO_A3 = Object.fromEntries(Object.entries(A3_TO_NUM).map(([a,n])=>[n,a]));
-      Promise.all([
-        d3.json("https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json"),
-        d3.csv("dataset/CBIData_Romelli_2025.csv")
-      ]).then(([world, rows]) => {
-        // Build 2023 snapshot
-        const vals = {};
-        rows.forEach(r => {
-          if (+r.year === 2023 && r.iso_a3 && r.cbie_index !== "") {
-            vals[r.iso_a3.trim()] = +r.cbie_index;
-          }
-        });
 
-        // Fit color scale to actual data range for maximum contrast
-        const allVals = Object.values(vals);
-        const color = d3.scaleSequential(d3.interpolateBlues)
-          .domain([d3.min(allVals) * 0.85, d3.max(allVals)]);
-
+      // Step 1: draw the world map immediately (grey countries)
+      d3.json("https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json").then(world => {
         const svg  = d3.select("#preview-map");
         const proj = d3.geoNaturalEarth1().scale(153).translate([480, 240]);
         const path = d3.geoPath().projection(proj);
         const countries = topojson.feature(world, world.objects.countries);
 
-        // Light grey ocean so blue countries stand out
         svg.append("path").datum({type:"Sphere"})
-          .attr("fill","#e8ecf0").attr("d", path);
+          .attr("fill","#dce3ea").attr("d", path);
 
-        svg.append("g").selectAll("path")
+        svg.append("g").attr("id","preview-countries")
+          .selectAll("path")
           .data(countries.features).join("path")
-          .attr("stroke","white").attr("stroke-width",0.4)
-          .attr("fill", d => {
-            const iso = NUM_TO_A3[String(d.id).padStart(3,"0")];
-            const v   = iso ? vals[iso] : null;
-            return (v != null) ? color(v) : "#cfd4da";
-          });
+          .attr("class","pcountry")
+          .attr("stroke","white").attr("stroke-width",0.5)
+          .attr("fill","#b0bec5");   // visible grey until data loads
 
         svg.append("path")
           .datum(topojson.mesh(world, world.objects.countries, (a,b)=>a!==b))
           .attr("fill","none").attr("stroke","white").attr("stroke-width",0.5)
           .attr("d", path);
-      }).catch(()=>{});
+
+        // Step 2: try to load CBI data and apply colors
+        d3.csv("dataset/CBIData_Romelli_2025.csv").then(rows => {
+          const vals = {};
+          rows.forEach(r => {
+            if (+r.year === 2023 && r.iso_a3 && r.cbie_index !== "") {
+              vals[r.iso_a3.trim()] = +r.cbie_index;
+            }
+          });
+          const allVals = Object.values(vals);
+          if (!allVals.length) return;
+          const color = d3.scaleSequential(d3.interpolateBlues)
+            .domain([d3.min(allVals) * 0.8, d3.max(allVals)]);
+
+          d3.select("#preview-countries").selectAll(".pcountry")
+            .attr("fill", d => {
+              const numId = String(typeof d.id === "number" ? d.id : parseInt(d.id, 10)).padStart(3,"0");
+              const iso = NUM_TO_A3[numId];
+              const v   = iso ? vals[iso] : null;
+              return (v != null) ? color(v) : "#b0bec5";
+            });
+        }).catch(() => {}); // keep grey countries if CSV unavailable
+      });
     })();
     </script>
 
