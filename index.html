@@ -4,13 +4,82 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CBI Data</title>
+    <title>Media Coverage | CBI Data</title>
 
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" crossorigin="anonymous">
-    <link href="https://unpkg.com/bootstrap-table@1.20.2/dist/bootstrap-table.min.css" rel="stylesheet">
-
     <link rel="stylesheet" href="css/main.css">
 
+    <style>
+        .year-heading {
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: #0569b9;
+            border-bottom: 3px solid #0569b9;
+            padding-bottom: 0.3em;
+            margin: 2rem 0 1rem;
+            display: inline-block;
+        }
+        .media-item {
+            display: flex;
+            gap: 14px;
+            align-items: flex-start;
+            padding: 14px 0;
+            border-bottom: 1px solid #e9ecef;
+        }
+        .media-item:last-child { border-bottom: none; }
+        .outlet-icon {
+            width: 24px;
+            height: 24px;
+            flex-shrink: 0;
+            margin-top: 2px;
+            border-radius: 4px;
+            object-fit: contain;
+        }
+        .outlet-name {
+            font-weight: 600;
+            color: #333;
+            font-size: 0.9rem;
+        }
+        .article-title {
+            color: #0569b9;
+            text-decoration: none;
+            font-size: 1rem;
+            line-height: 1.4;
+        }
+        .article-title:hover { text-decoration: underline; }
+        .item-meta {
+            font-size: 0.8rem;
+            color: #888;
+            margin-bottom: 3px;
+        }
+        .lang-badge {
+            display: inline-block;
+            font-size: 0.68rem;
+            font-weight: 700;
+            padding: 1px 6px;
+            border-radius: 10px;
+            vertical-align: middle;
+            margin-right: 4px;
+        }
+        .lang-en { background: #dde8f8; color: #0455a0; }
+        .lang-fr { background: #fde8e8; color: #b03030; }
+        .lang-de { background: #e8e8e8; color: #333; }
+        .lang-it { background: #e8f5e8; color: #1a6e1a; }
+        .lang-es { background: #fef4e8; color: #c05000; }
+        .lang-pt { background: #e8f5ee; color: #0f7238; }
+        .note-text {
+            font-size: 0.82rem;
+            color: #666;
+            font-style: italic;
+            margin-top: 3px;
+        }
+        .paywall-badge {
+            font-size: 0.72rem;
+            padding: 1px 7px;
+            margin-left: 6px;
+            vertical-align: middle;
+        }
+    </style>
 </head>
 
 <!-- Google tag (gtag.js) -->
@@ -19,351 +88,700 @@
   window.dataLayer = window.dataLayer || [];
   function gtag(){dataLayer.push(arguments);}
   gtag('js', new Date());
-
   gtag('config', 'G-DGCF4RH8PM');
 </script>
-    
+
 <body>
 
-    <!--- Nav ---> 
-    <nav class="navbar navbar-expand-lg" aria-label="Fifth navbar example">
-        <div class="container-fluid">
-          <a class="navbar-brand  fw-bold" href="https://cbidata.org">  CBI data & <span style="color: #0569b9;"> </br>Legislations </span> </a>
-          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation" style="border: 0;">
+<!--- Nav --->
+<nav class="navbar navbar-expand-lg" aria-label="Main navigation">
+    <div class="container-fluid">
+        <a class="navbar-brand fw-bold" href="https://cbidata.org">CBI data &amp; <span style="color:#0569b9;"><br>Legislations</span></a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation" style="border:0;">
             <span class="navbar-toggler-icon"></span>
-          </button>
-    
-          <div class="collapse navbar-collapse" id="navbar">
+        </button>
+        <div class="collapse navbar-collapse" id="navbar">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-
-              <li class="nav-item">
-                <a class="nav-link active" aria-current="page" href="https://cbidata.org">Home</a>
-              </li>
-
-
-              <li class="nav-item">
-                <a class="nav-link" href="datamapper">Data Mapper</a>
-              </li>
-
-              <li class="nav-item">
-                <a class="nav-link" href="media">Media</a>
-              </li>
-
-              <li class="nav-item">
-                <a class="nav-link" href="legislations">Legislations</a>
-              </li>
-
-              <li class="nav-item">
-                <a class="nav-link" href="vintages">Vintages</a>
-              </li>
-
-              <li class="nav-item">
-                <a class="nav-link" href="acknowledgements">Acknowledgements</a>
-              </li>
-                
+                <li class="nav-item"><a class="nav-link" href="https://cbidata.org">Home</a></li>
+                <li class="nav-item"><a class="nav-link" href="datamapper">Data Mapper</a></li>
+                <li class="nav-item"><a class="nav-link active" aria-current="page" href="media">Media</a></li>
+                <li class="nav-item"><a class="nav-link" href="legislations">Legislations</a></li>
+                <li class="nav-item"><a class="nav-link" href="vintages">Vintages</a></li>
+                <li class="nav-item"><a class="nav-link" href="acknowledgements">Acknowledgements</a></li>
             </ul>
-            
-          </div>
-        </div>
-      </nav>
-
-      <!--- Hero Section ---> 
-      <div class="mb-4  rounded-3">
-        <div class="container-fluid py-3">
-                
-          <h1 class="col-md-10 display-6 fw-bold" style="color: #0569b9;">Data on Central Bank Independence</h1>
-          <p class="col-md-14 fs-5">This website provides the data on the CBIE index in Romelli (<a style="color:#0569b9;" href="https://academic.oup.com/economicpolicy/advance-article/doi/10.1093/epolic/eiac011/6516019" target="_blank" rel="noopener">2022</a>, <a style="color:#0569b9;" href="https://papers.ssrn.com/sol3/papers.cfm?abstract_id=4716704" target="_blank" rel="noopener">2024</a>), as well as the most commonly used indices of central bank independence (i.e. Grilli, Masciandaro and Tabellini, 1991 and Cukierman, Webb and Neyapti, 1992) for 155 countries between 1923 (or the year in which the first legislation was available for a country) and 2023. The data draw on central bank legislations obtained from central bank websites and other sources and are freely available for academic research and personal non-commercial use.</p>
-    
-        </div>
-      </div>
-      
-    <!--- Data Mapper (embedded) --->
-    <div style="margin-bottom: 2em;">
-      <h2 style="border-bottom: solid 3px #0569b9; padding-bottom: 0.4em; margin-bottom: 0.8em; display:inline-block;">Explore the Data</h2>
-      <p class="fs-5">Use the interactive map to explore central bank independence across countries and over time. Click on a country to see its historical trend.</p>
-
-      <iframe
-        src="datamapper?embed"
-        title="CBI Data Mapper"
-        style="width:100%; height:680px; border:2px solid #dde3ea; border-radius:10px; display:block;"
-        loading="lazy">
-      </iframe>
-
-      <div style="text-align:right; margin-top:8px;">
-        <a href="datamapper" target="_blank" rel="noopener" class="btn btn-sm btn-outline-primary">Open full page &rarr;</a>
-      </div>
-    </div>
-
-    <!--- Data & Doc section --->
-    <div class="row align-items-md-stretch">
-        <!--- Data Block ---> 
-        <div class="col-md-6" style="margin-bottom: 1.5em;">
-            <div class="h-100 text-white p-5 rounded-3" style="background-color: #0569b9;">
-                <h2>Data</h2>
-                <p>Download the latest version of the dataset.</p>
-    
-                <div style="display: flex;">
-                    <button class="btn btn-warning" type="button" onclick="downloadFile('https://cbidata.org/dataset/CBIData_Romelli_2025.dta', 'CBIData_Romelli_2025.dta')" style="margin-right: 10px; padding: 6px 30px;">STATA</button>
-                    <button class="btn btn-warning" type="button" onclick="downloadFile('https://cbidata.org/dataset/CBIData_Romelli_2025.xlsx', 'CBIData_Romelli_2025.xlsx')" style="margin-right: 10px; padding: 6px 30px;">EXCEL</button>
-                </div>
-            </div>
-        </div>
-    
-        <!--- Codebook Block ---> 
-        <div class="col-md-6" style="margin-bottom: 1.5em;">
-            <div class="h-100 p-5 text-black rounded-3" style="background-color: #eeeeef;">
-                <h2>Codebook</h2>
-                <p>For a detailed description of the construction of this dataset download the codebook below.</p>
-    
-                <div style="text-align: center;">
-                    <a href="https://cbidata.org/dataset/CBIData_Romelli_2024_Codebook.pdf">
-                        <button class="btn btn-outline-dark" type="button" style="text-align: center;">Codebook</button>
-                    </a>
-                </div>
-            </div>
         </div>
     </div>
-    
-    <script>
-        function downloadFile(url, filename) {
-            var link = document.createElement('a');
-            link.href = url;
-            link.download = filename;
-            document.body.appendChild(link);
-            link.click();
-            document.body.removeChild(link);
-        }
-    </script>
+</nav>
 
-<!--- How to Cite Section --->
-<div class="mb-4 rounded-3" style="background-color: #eeeeef; margin-top: 2%;">
+<!--- Hero --->
+<div class="mb-4 rounded-3">
     <div class="container-fluid py-3">
-
-        <h2 class="col-md-6" style="margin-bottom: 1em;">Citations</h2>
-        <p class="col-md-14 fs-5"> When using this data, please cite: </p>
-        
-        <div style="padding: 0 50px;">
-            <ul class="col-md-14 fs-5" style="list-style-type: disc;">
-                <li>
-                    Romelli, D., 2022. 
-                    <strong>
-                        <span style="color:#0569b9;">
-                            <a style="color:#0569b9;" href="https://academic.oup.com/economicpolicy/advance-article/doi/10.1093/epolic/eiac011/6516019" target="_blank" rel="noopener">
-                                <em>The political economy of reforms in central bank design: evidence from a new dataset.</em>
-                            </a>
-                        </span>
-                    </strong> 
-                    <em> Economic Policy, 37(112), pp. 641-688.</em>
-                    <img src="https://upload.wikimedia.org/wikipedia/commons/f/f3/Open_Access_PLoS.svg" alt="Open Access" style="width: 70px; vertical-align: middle;">
-                </li>
-                <li>
-                    Romelli, D., 2024. 
-                    <strong>
-                        <span style="color:#0569b9;">
-                            <a style="color:#0569b9;" href="https://papers.ssrn.com/sol3/papers.cfm?abstract_id=4716704" target="_blank" rel="noopener">
-                                <em>Trends in central bank independence: a de-jure perspective.</em>
-                            </a>
-                        </span>
-                    </strong> 
-                    <em> BAFFI CAREFIN Centre Research Paper No. 217.</em>
-                </li>
-            </ul>
-        </div>
-
-        <!-- Button to open modal -->
-        <div style="padding: 0 40px;">
-            <button onclick="openModal()" class="btn btn-primary">BibTeX</button>
-        </div>
+        <h1 class="display-6 fw-bold" style="color:#0569b9;">Media Coverage</h1>
+        <p class="fs-5">Selected media coverage of the CBIE index and related research on central bank independence.</p>
     </div>
 </div>
 
-<!-- Modal for BibTeX citation -->
-<div id="bibtexModal" class="modal" style="display: none;">
-    <div class="modal-content">
-        <span class="close" onclick="closeModal()">&times;</span>
-        <h4 style="text-align: center;">BibTeX Citations</h4>
-        
-        <!-- First BibTeX entry -->
-        <div style="margin-bottom: 15px;">
-            <h5>1. The Political Economy of Reforms in Central Bank Design (2022)</h5>
-            <pre id="bibtexEntry1" style="white-space: pre-wrap; font-family: monospace; background-color: #f7f7f7; padding: 15px; border-radius: 5px;">
-@article{romelli2022political,
-  title={The political economy of reforms in Central Bank design: Evidence from a new dataset},
-  author={Romelli, Davide},
-  journal={Economic Policy},
-  volume={37},
-  number={112},
-  pages={641--688},
-  year={2022},
-  publisher={Oxford University Press}
-}
-            </pre>
-            <div style="text-align: center;">
-                <button class="btn btn-secondary" onclick="copyToClipboard('bibtexEntry1')">Copy</button>
-                <button class="btn btn-secondary" onclick="downloadBibTeX('The_Political_Economy_of_Reforms_2022', 'bibtexEntry1')">Download</button>
-            </div>
-        </div>
+<div class="container-fluid">
 
-        <!-- Second BibTeX entry -->
+<!-- ── 2026 ─────────────────────────────────────────────────────────────── -->
+<div class="year-heading">2026</div>
+<div>
+
+    <div class="media-item">
+        <img src="https://www.google.com/s2/favicons?domain=reuters.com&sz=32" class="outlet-icon" alt="Reuters">
         <div>
-            <h5>2. Trends in Central Bank Independence (2024)</h5>
-            <pre id="bibtexEntry2" style="white-space: pre-wrap; font-family: monospace; background-color: #f7f7f7; padding: 15px; border-radius: 5px;">
-@article{romelli2024,
-  title={Trends in central bank independence: a de-jure perspective},
-  author={Romelli, Davide},
-  year={2024},
-  journal={BAFFI CAREFIN Centre Research Paper No. 217}
-}
-            </pre>
-            <div style="text-align: center;">
-                <button class="btn btn-secondary" onclick="copyToClipboard('bibtexEntry2')">Copy</button>
-                <button class="btn btn-secondary" onclick="downloadBibTeX('Trends_in_CBI_2024', 'bibtexEntry2')">Download</button>
+            <div class="item-meta">
+                <span class="lang-badge lang-en">EN</span>
+                <span class="outlet-name">Reuters</span>
+                &middot; 27 Feb 2026
+            </div>
+            <div>
+                <a class="article-title" href="https://www.reuters.com/business/finance/under-siege-politics-central-bankers-fight-back-cost-2026-02-27/" target="_blank" rel="noopener">
+                    Under siege: politics, central bankers fight back at cost
+                </a>
             </div>
         </div>
     </div>
+
+    <div class="media-item">
+        <img src="https://www.google.com/s2/favicons?domain=economist.com&sz=32" class="outlet-icon" alt="The Economist">
+        <div>
+            <div class="item-meta">
+                <span class="lang-badge lang-en">EN</span>
+                <span class="outlet-name">The Economist</span>
+                &middot; 14 Jan 2026
+            </div>
+            <div>
+                <a class="article-title" href="https://www.economist.com/finance-and-economics/2026/01/14/its-not-just-the-fed-politics-looms-over-central-banks-everywhere?giftId=NDVkNWQyZmQtODk1ZS00ZjA0LTk0OGUtOWMwNzQ1YTk2NDE1dGVnX3VzZXI%3D&utm_campaign=gifted_article" target="_blank" rel="noopener">
+                    It's not just the Fed: politics looms over central banks everywhere
+                </a>
+                <!-- To add a PDF for paywalled version: <a class="btn btn-outline-secondary btn-sm paywall-badge" href="pdfs/economist-2026-01-14.pdf" target="_blank">PDF</a> -->
+            </div>
+        </div>
+    </div>
+
 </div>
 
-<!-- CSS for modal -->
-<style>
-    .modal {
-        position: fixed;
-        z-index: 9999;
-        left: 0;
-        top: 0;
-        width: 100%;
-        height: 100%;
-        overflow: auto;
-        background-color: rgba(0, 0, 0, 0.4);
-        display: flex;
-        align-items: center;
-        justify-content: center;
-    }
+<!-- ── 2025 ─────────────────────────────────────────────────────────────── -->
+<div class="year-heading">2025</div>
+<div>
 
-    .modal-content {
-        background-color: white;
-        padding: 20px;
-        border-radius: 10px;
-        width: 90%;
-        max-width: 600px;
-        box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
-    }
-
-    .close {
-        float: right;
-        font-size: 28px;
-        font-weight: bold;
-        cursor: pointer;
-    }
-
-    .close:hover,
-    .close:focus {
-        color: red;
-    }
-
-    .btn {
-        margin: 5px;
-    }
-</style>
-
-<!-- JavaScript for modal and buttons -->
-<script>
-    function openModal() {
-        document.getElementById('bibtexModal').style.display = 'flex';
-    }
-
-    function closeModal() {
-        document.getElementById('bibtexModal').style.display = 'none';
-    }
-
-    // Close modal when clicking outside of it
-    window.onclick = function(event) {
-        var modal = document.getElementById('bibtexModal');
-        if (event.target === modal) {
-            closeModal();
-        }
-    };
-
-    // Copy BibTeX content to clipboard
-    function copyToClipboard(elementId) {
-        var bibtexContent = document.getElementById(elementId).textContent.trim();
-        navigator.clipboard.writeText(bibtexContent).then(function () {
-            alert('BibTeX citation copied to clipboard!');
-        }, function () {
-            alert('Failed to copy citation.');
-        });
-    }
-
-    // Download BibTeX content as a .bib file
-    function downloadBibTeX(filename, elementId) {
-        var bibtexContent = document.getElementById(elementId).textContent.trim();
-        var blob = new Blob([bibtexContent], { type: 'text/plain;charset=utf-8' });
-        var link = document.createElement('a');
-        link.href = URL.createObjectURL(blob);
-        link.download = filename + '.bib';
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
-    }
-</script>
-
-
-      <!--Info Section-->
-        <div style="padding: 5% 0; ">
-              <h2 class="col-md-4" style=" border-bottom: solid 3px #0569b9; padding-bottom: 0.5em; margin-bottom: 1em;">Contact</h2>
-            
-              <div style="width: 205px;">
-                <img src="https://davideromelli.com/authors/romellid/avatar_hu6df458e1fcf777ffe09c1379780ec274_869923_270x270_fill_q75_lanczos_center.jpg?w=540&h=660" alt="davideromelli"  style="width: 205px; border-radius: 0.5rem 0.5rem 0  0  ;">
-    
-                <div style="background-color: #eeeeef;; text-align: center; padding: 20px 0 4px 0; border-radius: 0  0 0.5rem 0.5rem;">
-                
-                  <a href="https://davideromelli.com/"  target="_blank" style="text-decoration: none;">
-                    <h5 style="color: #0569b9; line-height: 0.8;" > 
-                      <b> Davide Romelli </b> 
-                    </h5>
-                  </a>
-    
-                  <p>Trinity College Dublin </p>
-                </div>
-    
-                <a href="" style="display: flex; text-decoration: none; align-items: center; margin-top: 10px; color: #0569b9; margin: 0;"> 
-
-                  <div style="display: flex; margin: 0; margin-top: 5px; justify-content: center;">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#0569b9" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" ><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6" ></polyline></svg> 
-                  
-                  <a style="text-decoration: none; margin-left: 5px; margin-bottom: 3px; color: #0569b9;" href = "mailto: romellid@tcd.ie">romellid@tcd.ie</a>
-                </a>
-                </div>                
+    <div class="media-item">
+        <img src="https://www.google.com/s2/favicons?domain=banque-france.fr&sz=32" class="outlet-icon" alt="Banque de France">
+        <div>
+            <div class="item-meta">
+                <span class="lang-badge lang-fr">FR</span>
+                <span class="outlet-name">Banque de France</span>
+                &middot; 29 Dec 2025
             </div>
-        
-
-      <!--- Footer ---> 
-        <div class="container">
-            <footer class="py-3 my-4 border-top">
-                <div class="row">
-                    <div class="col text-center">
-                        <a href="/" class="mb-3 me-2 mb-md-0 text-muted text-decoration-none lh-1">
-                            <svg class="bi" width="30" height="24"><use xlink:href="#bootstrap"></use></svg>
-                        </a>
-                        <p class="text-muted">Data © Davide Romelli. The code and data are freely available for academic research and personal non-commercial use. Any other use, including redistribution, requires prior consent under copyright protection.</p>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col d-flex justify-content-center">
-                        <ul class="list-unstyled d-flex">
-                            <li class="ms-3"><a class="text-muted" href="#"><svg class="bi" width="24" height="24"><use xlink:href="#twitter"></use></svg></a></li>
-                            <li class="ms-3"><a class="text-muted" href="#"><svg class="bi" width="24" height="24"><use xlink:href="#instagram"></use></svg></a></li>
-                            <li class="ms-3"><a class="text-muted" href="#"><svg class="bi" width="24" height="24"><use xlink:href="#facebook"></use></svg></a></li>
-                        </ul>
-                    </div>
-                </div>
-            </footer>
+            <div>
+                <a class="article-title" href="https://www.banque-france.fr/fr/publications-et-statistiques/publications/un-21e-membre-pour-la-zone-euro-en-2026-la-bulgarie" target="_blank" rel="noopener">
+                    Un 21e membre pour la zone euro en 2026 : la Bulgarie
+                </a>
+            </div>
+            <div class="note-text">Mentions "Central Bank Independence (Romelli, 2024)".</div>
         </div>
+    </div>
 
+    <div class="media-item">
+        <img src="https://www.google.com/s2/favicons?domain=ecb.europa.eu&sz=32" class="outlet-icon" alt="ECB">
+        <div>
+            <div class="item-meta">
+                <span class="lang-badge lang-en">EN</span>
+                <span class="outlet-name">European Central Bank</span>
+                &middot; 22 Nov 2025
+            </div>
+            <div>
+                <a class="article-title" href="https://www.ecb.europa.eu/press/key/date/2025/html/ecb.sp251122~41974d60f1.en.html" target="_blank" rel="noopener">
+                    ECB Speech on Central Bank Independence (22 November 2025)
+                </a>
+            </div>
+        </div>
+    </div>
 
-<!--- Scripts ---> 
+    <div class="media-item">
+        <img src="https://www.google.com/s2/favicons?domain=wallstreetitalia.com&sz=32" class="outlet-icon" alt="Wall Street Italia">
+        <div>
+            <div class="item-meta">
+                <span class="lang-badge lang-it">IT</span>
+                <span class="outlet-name">Wall Street Italia</span>
+                &middot; 17 Oct 2025
+            </div>
+            <div>
+                <a class="article-title" href="https://www.wallstreetitalia.com/opinioni/indipendenza-della-banche-centrali-cedere-o-resistere/" target="_blank" rel="noopener">
+                    Indipendenza della banche centrali: cedere o resistere?
+                </a>
+            </div>
+            <div class="note-text">References a study by Prof. Davide Romelli on central bank independence.</div>
+        </div>
+    </div>
+
+    <div class="media-item">
+        <img src="https://www.google.com/s2/favicons?domain=lamiafinanza.it&sz=32" class="outlet-icon" alt="La Mia Finanza">
+        <div>
+            <div class="item-meta">
+                <span class="lang-badge lang-it">IT</span>
+                <span class="outlet-name">La Mia Finanza</span>
+                &middot; Oct 2025
+            </div>
+            <div>
+                <a class="article-title" href="https://www.lamiafinanza.it/2025/10/indipendenza-delle-banche-centrali-cedere-o-resistere/" target="_blank" rel="noopener">
+                    Indipendenza delle banche centrali: cedere o resistere?
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <div class="media-item">
+        <img src="https://www.google.com/s2/favicons?domain=bfmtv.com&sz=32" class="outlet-icon" alt="BFM TV">
+        <div>
+            <div class="item-meta">
+                <span class="lang-badge lang-fr">FR</span>
+                <span class="outlet-name">BFM TV</span>
+                &middot; 1 Sep 2025
+            </div>
+            <div>
+                <a class="article-title" href="https://www.bfmtv.com/economie/international/trump-tente-une-nouvelle-methode-pour-prendre-le-controle-de-la-fed-sans-licencier-jerome-powell-ce-qui-est-de-mauvais-augure-pour-l-economie-americaine_AV-202509010600.html" target="_blank" rel="noopener">
+                    Trump tente une nouvelle méthode pour prendre le contrôle de la Fed sans licencier Jerome Powell
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <div class="media-item">
+        <img src="https://www.google.com/s2/favicons?domain=ft.com&sz=32" class="outlet-icon" alt="Financial Times">
+        <div>
+            <div class="item-meta">
+                <span class="lang-badge lang-en">EN</span>
+                <span class="outlet-name">Financial Times</span>
+                &middot; Sep 2025
+            </div>
+            <div>
+                <a class="article-title" href="https://www.ft.com/content/7b79c40b-47d4-489a-ad34-abdead76506c" target="_blank" rel="noopener">
+                    Financial Times article on central bank independence (September 2025)
+                </a>
+                <!-- Update title when accessible -->
+            </div>
+        </div>
+    </div>
+
+    <div class="media-item">
+        <img src="https://www.google.com/s2/favicons?domain=reuters.com&sz=32" class="outlet-icon" alt="Reuters">
+        <div>
+            <div class="item-meta">
+                <span class="lang-badge lang-en">EN</span>
+                <span class="outlet-name">Reuters</span>
+                &middot; 29 Aug 2025
+            </div>
+            <div>
+                <a class="article-title" href="https://www.reuters.com/business/finance/trump-tangles-with-semi-free-fed-2025-08-29/" target="_blank" rel="noopener">
+                    Trump tangles with semi-free Fed
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <div class="media-item">
+        <img src="https://www.google.com/s2/favicons?domain=cnn.com&sz=32" class="outlet-icon" alt="CNN">
+        <div>
+            <div class="item-meta">
+                <span class="lang-badge lang-en">EN</span>
+                <span class="outlet-name">CNN</span>
+                &middot; 29 Aug 2025
+            </div>
+            <div>
+                <a class="article-title" href="https://edition.cnn.com/2025/08/29/economy/trump-fed-turkey-argentina" target="_blank" rel="noopener">
+                    Trump, the Fed, Turkey and Argentina
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <div class="media-item">
+        <img src="https://www.google.com/s2/favicons?domain=ft.com&sz=32" class="outlet-icon" alt="Financial Times">
+        <div>
+            <div class="item-meta">
+                <span class="lang-badge lang-en">EN</span>
+                <span class="outlet-name">Financial Times</span>
+                &middot; Aug 2025
+            </div>
+            <div>
+                <a class="article-title" href="https://www.ft.com/content/cca193c5-c695-4f30-b293-bfadcd8a53c3" target="_blank" rel="noopener">
+                    Financial Times article on central bank independence (August 2025)
+                </a>
+                <!-- Update title when accessible -->
+            </div>
+        </div>
+    </div>
+
+    <div class="media-item">
+        <img src="https://www.google.com/s2/favicons?domain=ing.de&sz=32" class="outlet-icon" alt="ING">
+        <div>
+            <div class="item-meta">
+                <span class="lang-badge lang-de">DE</span>
+                <span class="outlet-name">ING</span>
+                &middot; 1 Aug 2025
+            </div>
+            <div>
+                <a class="article-title" href="https://www.ing.de/ueber-uns/presse/carsten-brzeskis-blog/chart-of-the-week-2025-08-01-wie-unabhaengig-ist-die-fed/" target="_blank" rel="noopener">
+                    Chart of the Week: Wie unabhängig ist die Fed?
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <div class="media-item">
+        <img src="https://www.google.com/s2/favicons?domain=reuters.com&sz=32" class="outlet-icon" alt="Reuters">
+        <div>
+            <div class="item-meta">
+                <span class="lang-badge lang-en">EN</span>
+                <span class="outlet-name">Reuters</span>
+                &middot; 21 Jul 2025
+            </div>
+            <div>
+                <a class="article-title" href="https://www.reuters.com/world/us/trumps-fed-attacks-puncture-veneer-central-bank-independence-2025-07-21/" target="_blank" rel="noopener">
+                    Trump's Fed attacks puncture veneer of central bank independence
+                </a>
+            </div>
+            <div class="note-text">Cites Davide Romelli and his central bank independence index.</div>
+        </div>
+    </div>
+
+    <div class="media-item">
+        <img src="https://www.google.com/s2/favicons?domain=reuters.com&sz=32" class="outlet-icon" alt="Reuters">
+        <div>
+            <div class="item-meta">
+                <span class="lang-badge lang-en">EN</span>
+                <span class="outlet-name">Reuters</span>
+                &middot; 21 Jul 2025
+            </div>
+            <div>
+                <a class="article-title" href="https://www.reuters.com/world/trading-day-equity-optimism-hard-quell-2025-07-21/" target="_blank" rel="noopener">
+                    Trading Day: Equity optimism hard to quell
+                </a>
+            </div>
+            <div class="note-text">Includes a section referencing Romelli and central bank independence.</div>
+        </div>
+    </div>
+
+    <div class="media-item">
+        <img src="https://www.google.com/s2/favicons?domain=spiegel.de&sz=32" class="outlet-icon" alt="Der Spiegel">
+        <div>
+            <div class="item-meta">
+                <span class="lang-badge lang-de">DE</span>
+                <span class="outlet-name">Der Spiegel</span>
+                &middot; 20 Jul 2025
+            </div>
+            <div>
+                <a class="article-title" href="https://archive.is/20250720113124/https://www.spiegel.de/wirtschaft/unternehmen/donald-trump-und-die-fed-wie-verletzlich-ist-die-ezb-kolumne-a-96476b82-f2b6-42c5-9747-76007789e591" target="_blank" rel="noopener">
+                    Donald Trump und die Fed: Wie verletzlich ist die EZB?
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <div class="media-item">
+        <img src="https://www.google.com/s2/favicons?domain=theconversation.com&sz=32" class="outlet-icon" alt="The Conversation">
+        <div>
+            <div class="item-meta">
+                <span class="lang-badge lang-es">ES</span>
+                <span class="outlet-name">The Conversation</span>
+                &middot; Jul 2025
+            </div>
+            <div>
+                <a class="article-title" href="https://theconversation.com/presiones-politicas-a-la-reserva-federal-por-que-es-tan-importante-que-los-bancos-centrales-sean-independientes-261772" target="_blank" rel="noopener">
+                    Presiones políticas a la Reserva Federal: por qué es tan importante que los bancos centrales sean independientes
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <div class="media-item">
+        <img src="https://www.google.com/s2/favicons?domain=lexpress.fr&sz=32" class="outlet-icon" alt="L'Express">
+        <div>
+            <div class="item-meta">
+                <span class="lang-badge lang-fr">FR</span>
+                <span class="outlet-name">L'Express</span>
+                &middot; 2025
+            </div>
+            <div>
+                <a class="article-title" href="https://www.lexpress.fr/economie/de-jordan-bardella-a-nigel-farage-loffensive-de-trump-contre-la-fed-fait-des-emules-en-europe-H4CJGT2MUJHXZKVPY44453TIT4/" target="_blank" rel="noopener">
+                    De Jordan Bardella à Nigel Farage, l'offensive de Trump contre la Fed fait des émules en Europe
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <div class="media-item">
+        <img src="https://www.google.com/s2/favicons?domain=agefi.fr&sz=32" class="outlet-icon" alt="L'Agefi">
+        <div>
+            <div class="item-meta">
+                <span class="lang-badge lang-fr">FR</span>
+                <span class="outlet-name">L'Agefi</span>
+                &middot; 4 Mar 2025
+            </div>
+            <div>
+                <a class="article-title" href="https://www.agefi.fr/id%C3%A9es/opinions/les-banques-centrales-sont-elles-menacees-20250304" target="_blank" rel="noopener">
+                    Les banques centrales sont-elles menacées?
+                </a>
+            </div>
+            <div class="note-text">Mentions CB independence and references Romelli/CBIE + cbidata.org.</div>
+        </div>
+    </div>
+
+    <div class="media-item">
+        <img src="https://www.google.com/s2/favicons?domain=agefi.com&sz=32" class="outlet-icon" alt="Agefi">
+        <div>
+            <div class="item-meta">
+                <span class="lang-badge lang-en">EN</span>
+                <span class="outlet-name">L'Agefi</span>
+                &middot; 2025
+            </div>
+            <div>
+                <a class="article-title" href="https://agefi.com/actualites/opinions/the-feds-independence-in-question" target="_blank" rel="noopener">
+                    The Fed's independence in question
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <div class="media-item">
+        <img src="https://www.google.com/s2/favicons?domain=bundesbank.de&sz=32" class="outlet-icon" alt="Deutsche Bundesbank">
+        <div>
+            <div class="item-meta">
+                <span class="lang-badge lang-en">EN</span>
+                <span class="outlet-name">Deutsche Bundesbank</span>
+                &middot; 2025
+            </div>
+            <div>
+                <a class="article-title" href="https://www.bundesbank.de/en/press/speeches/central-bank-independence-and-the-mandate-evolving-views-903038" target="_blank" rel="noopener">
+                    Central bank independence and the mandate: evolving views
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <div class="media-item">
+        <img src="https://www.google.com/s2/favicons?domain=bpb.de&sz=32" class="outlet-icon" alt="BPB">
+        <div>
+            <div class="item-meta">
+                <span class="lang-badge lang-de">DE</span>
+                <span class="outlet-name">Bundeszentrale für politische Bildung</span>
+                &middot; 2025
+            </div>
+            <div>
+                <a class="article-title" href="https://www.bpb.de/themen/wirtschaft/zahlenbitte/569461/12-was-macht-eigentlich-eine-zentralbank/" target="_blank" rel="noopener">
+                    Was macht eigentlich eine Zentralbank?
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <div class="media-item">
+        <img src="https://www.google.com/s2/favicons?domain=nowcanal.pt&sz=32" class="outlet-icon" alt="Jornal de Negócios">
+        <div>
+            <div class="item-meta">
+                <span class="lang-badge lang-pt">PT</span>
+                <span class="outlet-name">Jornal de Negócios</span>
+                &middot; 21 Jan 2025
+            </div>
+            <div>
+                <a class="article-title" href="https://www.nowcanal.pt/ultimas/detalhe/independencia-do-banco-de-portugal-mantem-se-desde-entrada-no-euro" target="_blank" rel="noopener">
+                    Independência do Banco de Portugal mantém-se desde entrada no euro
+                </a>
+            </div>
+            <div class="note-text">Attributes the conclusion to Davide Romelli.</div>
+        </div>
+    </div>
+
+</div>
+
+<!-- ── 2024 ─────────────────────────────────────────────────────────────── -->
+<div class="year-heading">2024</div>
+<div>
+
+    <div class="media-item">
+        <img src="https://www.google.com/s2/favicons?domain=ft.com&sz=32" class="outlet-icon" alt="Financial Times">
+        <div>
+            <div class="item-meta">
+                <span class="lang-badge lang-en">EN</span>
+                <span class="outlet-name">Financial Times</span>
+                &middot; Nov 2024
+            </div>
+            <div>
+                <a class="article-title" href="https://www.ft.com/content/7c2b87ba-ae72-4b89-bbe2-f9830264071f?accessToken=zwAGJzRG6cD4kc98K4e6rnJLidO74vmDAmQHHw.MEUCIQC6ZR2Myp9nq9qCiZjkNVG4XrGnbHWKueWIaUiven254gIgDAt_PaVJBbeald7ehpB7nst6D9M8bQFUjXjtBzxcf3g&sharetype=gift&token=779d1e4e-5e51-466c-8b92-de5dbcb68ff5" target="_blank" rel="noopener">
+                    Financial Times article on central bank independence (November 2024)
+                </a>
+                <!-- Gift link — update title when accessible -->
+            </div>
+        </div>
+    </div>
+
+    <div class="media-item">
+        <img src="https://www.google.com/s2/favicons?domain=elpais.com&sz=32" class="outlet-icon" alt="El País">
+        <div>
+            <div class="item-meta">
+                <span class="lang-badge lang-es">ES</span>
+                <span class="outlet-name">El País</span>
+                &middot; 26 Aug 2024
+            </div>
+            <div>
+                <a class="article-title" href="https://elpais.com/economia/2024-08-26/el-banco-de-espana-se-juega-su-futuro.html" target="_blank" rel="noopener">
+                    El Banco de España se juega su futuro
+                </a>
+            </div>
+            <div class="note-text">Explicitly mentions the "índice de Davide Romelli".</div>
+        </div>
+    </div>
+
+    <div class="media-item">
+        <img src="https://www.google.com/s2/favicons?domain=lemonde.fr&sz=32" class="outlet-icon" alt="Le Monde">
+        <div>
+            <div class="item-meta">
+                <span class="lang-badge lang-en">EN</span>
+                <span class="outlet-name">Le Monde</span>
+                &middot; 21 Aug 2024
+            </div>
+            <div>
+                <a class="article-title" href="https://www.lemonde.fr/en/economy/article/2024/08/21/central-bankers-independence-is-under-growing-political-pressure_6719444_19.html" target="_blank" rel="noopener">
+                    Central bankers' independence is under growing political pressure
+                </a>
+            </div>
+            <div class="note-text">Quotes Davide Romelli on de jure vs. de facto independence.</div>
+        </div>
+    </div>
+
+    <div class="media-item">
+        <img src="https://www.google.com/s2/favicons?domain=lemonde.fr&sz=32" class="outlet-icon" alt="Le Monde">
+        <div>
+            <div class="item-meta">
+                <span class="lang-badge lang-fr">FR</span>
+                <span class="outlet-name">Le Monde</span>
+                &middot; 21 Aug 2024
+            </div>
+            <div>
+                <a class="article-title" href="https://www.lemonde.fr/economie/article/2024/08/21/l-independance-des-banquiers-centraux-sous-pression-politique-grandissante_6288597_3234.html" target="_blank" rel="noopener">
+                    L'indépendance des banquiers centraux sous pression politique grandissante
+                </a>
+                <!-- To add PDF: <a class="btn btn-outline-secondary btn-sm paywall-badge" href="pdfs/lemonde-2024-08-21.pdf" target="_blank">PDF</a> -->
+            </div>
+            <div class="note-text">Quotes Davide Romelli on de jure vs. de facto independence. May be paywalled.</div>
+        </div>
+    </div>
+
+    <div class="media-item">
+        <img src="https://www.google.com/s2/favicons?domain=whitehouse.gov&sz=32" class="outlet-icon" alt="White House CEA">
+        <div>
+            <div class="item-meta">
+                <span class="lang-badge lang-en">EN</span>
+                <span class="outlet-name">White House Council of Economic Advisers</span>
+                &middot; 22 May 2024
+            </div>
+            <div>
+                <a class="article-title" href="https://www.whitehouse.gov/cea/written-materials/2024/05/22/the-importance-of-central-bank-independence/#_ftn1" target="_blank" rel="noopener">
+                    The importance of central bank independence
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <div class="media-item">
+        <img src="https://www.google.com/s2/favicons?domain=infobae.com&sz=32" class="outlet-icon" alt="Infobae">
+        <div>
+            <div class="item-meta">
+                <span class="lang-badge lang-es">ES</span>
+                <span class="outlet-name">Infobae</span>
+                &middot; 2 Mar 2024
+            </div>
+            <div>
+                <a class="article-title" href="https://www.infobae.com/opinion/2024/03/02/la-magia-del-banco-central-independiente/" target="_blank" rel="noopener">
+                    La magia del banco central independiente
+                </a>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<!-- ── 2022 ─────────────────────────────────────────────────────────────── -->
+<div class="year-heading">2022</div>
+<div>
+
+    <div class="media-item">
+        <img src="https://www.google.com/s2/favicons?domain=blogs.lse.ac.uk&sz=32" class="outlet-icon" alt="LSE Business Review">
+        <div>
+            <div class="item-meta">
+                <span class="lang-badge lang-en">EN</span>
+                <span class="outlet-name">LSE Business Review</span>
+                &middot; 6 Jan 2022
+            </div>
+            <div>
+                <a class="article-title" href="https://blogs.lse.ac.uk/businessreview/2022/01/06/the-political-economy-of-central-bank-independence/" target="_blank" rel="noopener">
+                    The political economy of central bank independence
+                </a>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<!-- ── Other (no date) ───────────────────────────────────────────────────── -->
+<div class="year-heading">Other</div>
+<div>
+
+    <div class="media-item">
+        <img src="https://www.google.com/s2/favicons?domain=ft.com&sz=32" class="outlet-icon" alt="Financial Times">
+        <div>
+            <div class="item-meta">
+                <span class="lang-badge lang-en">EN</span>
+                <span class="outlet-name">Financial Times</span>
+            </div>
+            <div>
+                <a class="article-title" href="https://www.ft.com/content/cca193c5-c695-4f30-b293-bfadcd8a53c3" target="_blank" rel="noopener">
+                    Financial Times article on central bank independence
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <div class="media-item">
+        <img src="https://www.google.com/s2/favicons?domain=cepr.org&sz=32" class="outlet-icon" alt="VoxEU – CEPR">
+        <div>
+            <div class="item-meta">
+                <span class="lang-badge lang-en">EN</span>
+                <span class="outlet-name">VoxEU – CEPR</span>
+            </div>
+            <div>
+                <a class="article-title" href="https://cepr.org/voxeu/columns/under-pressure-central-bank-independence-meets-blockchain-prediction-markets" target="_blank" rel="noopener">
+                    Under pressure: central bank independence meets blockchain prediction markets
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <div class="media-item">
+        <img src="https://www.google.com/s2/favicons?domain=voxukraine.org&sz=32" class="outlet-icon" alt="VoxUkraine">
+        <div>
+            <div class="item-meta">
+                <span class="lang-badge lang-en">EN</span>
+                <span class="outlet-name">VoxUkraine</span>
+            </div>
+            <div>
+                <a class="article-title" href="https://voxukraine.org/en/do-independent-central-banks-get-in-the-way-of-industrial-policy" target="_blank" rel="noopener">
+                    Do independent central banks get in the way of industrial policy?
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <div class="media-item">
+        <img src="https://www.google.com/s2/favicons?domain=e-axes.com&sz=32" class="outlet-icon" alt="e-axes">
+        <div>
+            <div class="item-meta">
+                <span class="lang-badge lang-en">EN</span>
+                <span class="outlet-name">e-axes</span>
+            </div>
+            <div>
+                <a class="article-title" href="https://e-axes.com/central-bank-independence-a-new-index-and-trends/" target="_blank" rel="noopener">
+                    Central bank independence: a new index and trends
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <div class="media-item">
+        <img src="https://www.google.com/s2/favicons?domain=iea-world.org&sz=32" class="outlet-icon" alt="International Economic Association">
+        <div>
+            <div class="item-meta">
+                <span class="lang-badge lang-en">EN</span>
+                <span class="outlet-name">International Economic Association</span>
+            </div>
+            <div>
+                <a class="article-title" href="https://www.iea-world.org/silence-is-golden-how-public-criticism-of-central-banks-can-backfire-for-leaders/" target="_blank" rel="noopener">
+                    Silence is golden: how public criticism of central banks can backfire for leaders
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <div class="media-item">
+        <img src="https://www.google.com/s2/favicons?domain=economic-policy.org&sz=32" class="outlet-icon" alt="Economic Policy">
+        <div>
+            <div class="item-meta">
+                <span class="lang-badge lang-en">EN</span>
+                <span class="outlet-name">Economic Policy Blog</span>
+            </div>
+            <div>
+                <a class="article-title" href="https://www.economic-policy.org/74th-economic-policy-panel/central-banks/" target="_blank" rel="noopener">
+                    74th Economic Policy Panel: Central Banks
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <div class="media-item">
+        <img src="https://www.google.com/s2/favicons?domain=economictimes.indiatimes.com&sz=32" class="outlet-icon" alt="The Economic Times">
+        <div>
+            <div class="item-meta">
+                <span class="lang-badge lang-en">EN</span>
+                <span class="outlet-name">The Economic Times</span>
+            </div>
+            <div>
+                <a class="article-title" href="https://economictimes.indiatimes.com/news/new-updates/from-urjit-patels-resignation-to-trump-powell-feud-heres-a-look-into-govt-central-bank-clashes-over-the-years/articleshow/122766075.cms" target="_blank" rel="noopener">
+                    From Urjit Patel's resignation to Trump–Powell feud: a look into govt–central bank clashes over the years
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <div class="media-item">
+        <img src="https://www.google.com/s2/favicons?domain=institutional-money.com&sz=32" class="outlet-icon" alt="Institutional Money">
+        <div>
+            <div class="item-meta">
+                <span class="lang-badge lang-de">DE</span>
+                <span class="outlet-name">Institutional Money</span>
+            </div>
+            <div>
+                <a class="article-title" href="https://www.institutional-money.com/magazin/theorie-praxis/artikel/abhaengigkeit-befeuert-inflation-60030/" target="_blank" rel="noopener">
+                    Abhängigkeit befeuert Inflation
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <div class="media-item">
+        <img src="https://www.google.com/s2/favicons?domain=publico.pt&sz=32" class="outlet-icon" alt="Público">
+        <div>
+            <div class="item-meta">
+                <span class="lang-badge lang-pt">PT</span>
+                <span class="outlet-name">Público</span>
+            </div>
+            <div>
+                <a class="article-title" href="https://publico.pt/s/tvUCAA" target="_blank" rel="noopener">
+                    Público article on central bank independence
+                    <!-- Update title when accessible -->
+                </a>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+</div><!-- /container-fluid -->
+
+<!--- Footer --->
+<div class="container" style="margin-top:3rem;">
+    <footer class="py-3 my-4 border-top">
+        <div class="row">
+            <div class="col text-center">
+                <p class="text-muted">Data &copy; Davide Romelli. The code and data are freely available for academic research and personal non-commercial use. Any other use, including redistribution, requires prior consent under copyright protection.</p>
+            </div>
+        </div>
+    </footer>
+</div>
+
+<!--- Scripts --->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/5.0.0-alpha1/js/bootstrap.min.js" integrity="sha384-oesi62hOLfzrys4LxRF63OJCXdXDipiYWBnvTl9Y9/TRlw5xlKIEHpNyvvDShgf/" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-pprn3073KE6tl6bjs2QrFaJGz5/SUsLqktiwsUTF55Jfv3qYSDhgCecCxMW52nD2" crossorigin="anonymous"></script>
-<script src="https://unpkg.com/bootstrap-table@1.20.2/dist/bootstrap-table.min.js"></script>
 </body>
 </html>
