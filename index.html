@@ -79,9 +79,9 @@
       <h2 style="border-bottom: solid 3px #0569b9; padding-bottom: 0.4em; margin-bottom: 0.8em; display:inline-block;">Explore the Data</h2>
       <p class="fs-5">Use the interactive map to explore central bank independence across countries and over time.</p>
 
-      <a href="datamapper" style="text-decoration: none;" id="map-preview-link">
+      <a href="datamapper" target="_blank" rel="noopener" style="text-decoration: none;" id="map-preview-link">
         <div id="map-preview-wrapper" style="position:relative; border-radius:10px; overflow:hidden; cursor:pointer; border:2px solid #dde3ea;">
-          <svg id="preview-map" viewBox="0 0 960 480" preserveAspectRatio="xMidYMid meet" style="width:100%;display:block;background:#d0e3f0;"></svg>
+          <svg id="preview-map" viewBox="0 0 960 480" preserveAspectRatio="xMidYMid meet" style="width:100%;display:block;background:#e8ecf0;"></svg>
           <!-- Overlay on hover -->
           <div id="map-overlay" style="
             position:absolute; inset:0;
@@ -99,7 +99,7 @@
       </a>
 
       <div style="text-align:center; margin-top:10px;">
-        <a href="datamapper" class="btn btn-primary" style="padding: 8px 32px;">Open Data Mapper &rarr;</a>
+        <a href="datamapper" target="_blank" rel="noopener" class="btn btn-primary" style="padding: 8px 32px;">Open Data Mapper &rarr;</a>
       </div>
     </div>
 
@@ -139,8 +139,6 @@
         URY:"858",UZB:"860",VEN:"862",YEM:"887",ZMB:"894"
       };
       const NUM_TO_A3 = Object.fromEntries(Object.entries(A3_TO_NUM).map(([a,n])=>[n,a]));
-      const color = d3.scaleSequential(d3.interpolateBlues).domain([0,1]);
-
       Promise.all([
         d3.json("https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json"),
         d3.csv("dataset/CBIData_Romelli_2025.csv")
@@ -153,13 +151,19 @@
           }
         });
 
+        // Fit color scale to actual data range for maximum contrast
+        const allVals = Object.values(vals);
+        const color = d3.scaleSequential(d3.interpolateBlues)
+          .domain([d3.min(allVals) * 0.85, d3.max(allVals)]);
+
         const svg  = d3.select("#preview-map");
         const proj = d3.geoNaturalEarth1().scale(153).translate([480, 240]);
         const path = d3.geoPath().projection(proj);
         const countries = topojson.feature(world, world.objects.countries);
 
+        // Light grey ocean so blue countries stand out
         svg.append("path").datum({type:"Sphere"})
-          .attr("fill","#d0e3f0").attr("d", path);
+          .attr("fill","#e8ecf0").attr("d", path);
 
         svg.append("g").selectAll("path")
           .data(countries.features).join("path")
@@ -167,7 +171,7 @@
           .attr("fill", d => {
             const iso = NUM_TO_A3[String(d.id).padStart(3,"0")];
             const v   = iso ? vals[iso] : null;
-            return (v != null) ? color(v) : "#d8d8d8";
+            return (v != null) ? color(v) : "#cfd4da";
           });
 
         svg.append("path")
@@ -451,4 +455,3 @@
 <script src="https://unpkg.com/bootstrap-table@1.20.2/dist/bootstrap-table.min.js"></script>
 </body>
 </html>
-
