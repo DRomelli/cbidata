@@ -1,0 +1,588 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CBI Data Mapper | CBI Data</title>
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" crossorigin="anonymous">
+    <link rel="stylesheet" href="css/main.css">
+
+    <style>
+        #map-wrapper {
+            position: relative;
+            width: 100%;
+            background: #f0f4f8;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+        #world-map { width: 100%; height: auto; display: block; }
+
+        #tooltip {
+            position: fixed;
+            background: white;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            padding: 8px 13px;
+            font-size: 13px;
+            pointer-events: none;
+            display: none;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.15);
+            z-index: 2000;
+            min-width: 160px;
+        }
+        .tt-name { font-weight: 600; color: #0569b9; margin-bottom: 2px; }
+        .tt-val  { color: #333; }
+
+        .country { stroke: white; stroke-width: 0.3; cursor: pointer; transition: opacity 0.1s; }
+        .country:hover { opacity: 0.75; stroke: #555; stroke-width: 0.8; }
+        .country.selected { stroke: #e05c00; stroke-width: 1.8; opacity: 1 !important; }
+        .country.no-data  { fill: #d8d8d8; }
+
+        #controls {
+            background: #f8f9fa;
+            border: 1px solid #e9ecef;
+            border-radius: 8px;
+            padding: 14px 16px;
+            margin-bottom: 12px;
+        }
+        .year-badge {
+            font-size: 1.7rem;
+            font-weight: 700;
+            color: #0569b9;
+            min-width: 65px;
+            line-height: 1;
+        }
+        #play-btn {
+            width: 36px; height: 36px;
+            background: #0569b9; color: white;
+            border: none; border-radius: 50%;
+            font-size: 13px; cursor: pointer;
+            display: flex; align-items: center; justify-content: center;
+            flex-shrink: 0;
+        }
+        #play-btn:hover { background: #0455a0; }
+        #year-slider { accent-color: #0569b9; }
+
+        #chart-panel {
+            display: none;
+            background: #f8f9fa;
+            border: 1px solid #e9ecef;
+            border-radius: 8px;
+            padding: 14px 16px;
+            margin-top: 14px;
+        }
+        #line-chart { width: 100%; overflow: visible; }
+
+        #legend-svg {
+            position: absolute;
+            bottom: 12px;
+            left: 12px;
+            background: rgba(255,255,255,0.88);
+            border-radius: 5px;
+            padding: 4px 6px;
+        }
+
+        #suggestions-box {
+            position: absolute;
+            z-index: 500;
+            background: white;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            max-height: 200px;
+            overflow-y: auto;
+            display: none;
+            min-width: 200px;
+            box-shadow: 0 3px 8px rgba(0,0,0,0.1);
+        }
+        .sug-item {
+            padding: 6px 10px;
+            cursor: pointer;
+            font-size: 13px;
+        }
+        .sug-item:hover { background: #e8f0fb; }
+
+        .grid line { stroke: #eee; }
+        .grid .domain { display: none; }
+        .axis text { font-size: 11px; }
+    </style>
+</head>
+
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-DGCF4RH8PM"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-DGCF4RH8PM');
+</script>
+
+<body>
+
+<!--- Nav --->
+<nav class="navbar navbar-expand-lg" aria-label="Main navigation">
+    <div class="container-fluid">
+        <a class="navbar-brand fw-bold" href="https://cbidata.org">CBI data & <span style="color: #0569b9;"><br>Legislations</span></a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation" style="border: 0;">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbar">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <li class="nav-item"><a class="nav-link" href="https://cbidata.org">Home</a></li>
+                <li class="nav-item"><a class="nav-link active" aria-current="page" href="datamapper">Data Mapper</a></li>
+                <li class="nav-item"><a class="nav-link" href="legislations">Legislations</a></li>
+                <li class="nav-item"><a class="nav-link" href="vintages">Vintages</a></li>
+                <li class="nav-item"><a class="nav-link" href="acknowledgements">Acknowledgements</a></li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<div class="container-fluid py-3">
+
+    <h1 class="display-6 fw-bold" style="color: #0569b9;">CBI Data Mapper</h1>
+    <p class="fs-5 text-muted mb-3">Explore central bank independence across countries and over time. Click a country to view its historical trend.</p>
+
+    <!--- Controls --->
+    <div id="controls">
+        <div class="row g-2 align-items-end mb-3">
+            <div class="col-md-5 col-sm-7">
+                <label class="form-label fw-semibold mb-1 small" for="indicator-select">Indicator</label>
+                <select id="indicator-select" class="form-select form-select-sm">
+                    <option value="cbie_index">CBIE Index (Romelli 2022, 2024)</option>
+                    <optgroup label="CBIE Sub-indices">
+                        <option value="cbie_board">Board independence</option>
+                        <option value="cbie_policy">Policy independence</option>
+                        <option value="cbie_obj">Objectives</option>
+                        <option value="cbie_lending">Lending restrictions</option>
+                        <option value="cbie_finindep">Financial independence</option>
+                        <option value="cbie_report">Reporting &amp; accountability</option>
+                    </optgroup>
+                    <optgroup label="Comparison indices">
+                        <option value="cbie_gmt">GMT Index (Grilli et al. 1991, normalized)</option>
+                        <option value="cbie_cwn_lvau">CWN Index – unweighted (Cukierman et al. 1992)</option>
+                        <option value="cbie_cwn_lvaw">CWN Index – weighted (Cukierman et al. 1992)</option>
+                    </optgroup>
+                </select>
+            </div>
+            <div class="col-md-4 col-sm-5" style="position: relative;">
+                <label class="form-label fw-semibold mb-1 small" for="country-search">Find country</label>
+                <input type="text" id="country-search" class="form-control form-control-sm" placeholder="Type to search…" autocomplete="off">
+                <div id="suggestions-box"></div>
+            </div>
+            <div class="col-md-3 col-12 d-flex align-items-end">
+                <span class="text-muted small"><span style="display:inline-block;width:12px;height:12px;background:#d8d8d8;border-radius:2px;vertical-align:middle;margin-right:4px;"></span>No data available</span>
+            </div>
+        </div>
+
+        <!--- Year slider --->
+        <div class="d-flex align-items-center gap-3">
+            <button id="play-btn" title="Play / Pause">&#9654;</button>
+            <span class="year-badge" id="year-display">2023</span>
+            <input type="range" id="year-slider" class="form-range" min="1923" max="2023" value="2023" step="1">
+        </div>
+    </div>
+
+    <!--- Map --->
+    <div id="map-wrapper">
+        <div id="tooltip">
+            <div class="tt-name" id="tt-name"></div>
+            <div class="tt-val"  id="tt-val"></div>
+        </div>
+        <svg id="world-map" viewBox="0 0 960 500" preserveAspectRatio="xMidYMid meet"></svg>
+        <svg id="legend-svg" width="190" height="46"></svg>
+    </div>
+
+    <!--- Time-series chart panel --->
+    <div id="chart-panel">
+        <div class="d-flex justify-content-between align-items-start mb-2">
+            <div>
+                <h5 id="chart-title" class="mb-0" style="color:#0569b9;"></h5>
+                <small id="chart-subtitle" class="text-muted"></small>
+            </div>
+            <button onclick="closeChart()" class="btn btn-sm btn-outline-secondary">&#10005; Close</button>
+        </div>
+        <svg id="line-chart" viewBox="0 0 720 240" preserveAspectRatio="xMidYMid meet"></svg>
+    </div>
+
+</div>
+
+<!--- Footer --->
+<div class="container">
+    <footer class="py-3 my-4 border-top">
+        <div class="row">
+            <div class="col text-center">
+                <p class="text-muted small">Data &copy; Davide Romelli. Freely available for academic research and personal non-commercial use.</p>
+            </div>
+        </div>
+    </footer>
+</div>
+
+<script src="https://d3js.org/d3.v7.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/topojson-client@3/dist/topojson-client.min.js"></script>
+
+<script>
+// ─── ISO alpha-3 → numeric lookup (ISO 3166-1) ───────────────────────────────
+const A3_TO_NUM = {
+  AFG:"004",ALB:"008",DZA:"012",AND:"020",AGO:"024",ATG:"028",AZE:"031",
+  ARG:"032",AUS:"036",AUT:"040",BHS:"044",BHR:"048",BGD:"050",ARM:"051",
+  BRB:"052",BEL:"056",BTN:"064",BOL:"068",BIH:"070",BWA:"072",BRA:"076",
+  BLZ:"084",SLB:"090",BRN:"096",BGR:"100",MMR:"104",BDI:"108",BLR:"112",
+  KHM:"116",CMR:"120",CAN:"124",CPV:"132",CAF:"140",LKA:"144",TCD:"148",
+  CHL:"152",CHN:"156",TWN:"158",COL:"170",COM:"174",COG:"178",COD:"180",
+  CRI:"188",HRV:"191",CUB:"192",CYP:"196",CZE:"203",BEN:"204",DNK:"208",
+  DMA:"212",DOM:"214",ECU:"218",SLV:"222",GNQ:"226",ETH:"231",ERI:"232",
+  EST:"233",FJI:"242",FIN:"246",FRA:"250",GUF:"254",PYF:"258",DJI:"262",
+  GAB:"266",GEO:"268",GMB:"270",PSE:"275",DEU:"276",GHA:"288",GRC:"300",
+  GRL:"304",GRD:"308",GLP:"312",GTM:"320",GIN:"324",GUY:"328",HTI:"332",
+  HND:"340",HKG:"344",HUN:"348",ISL:"352",IND:"356",IDN:"360",IRN:"364",
+  IRQ:"368",IRL:"372",ISR:"376",ITA:"380",CIV:"384",JAM:"388",JPN:"392",
+  KAZ:"398",JOR:"400",KEN:"404",PRK:"408",KOR:"410",KWT:"414",KGZ:"417",
+  LAO:"418",LBN:"422",LSO:"426",LVA:"428",LBR:"430",LBY:"434",LIE:"438",
+  LTU:"440",LUX:"442",MAC:"446",MDG:"450",MWI:"454",MYS:"458",MDV:"462",
+  MLI:"466",MLT:"470",MTQ:"474",MRT:"478",MUS:"480",MEX:"484",MCO:"492",
+  MNG:"496",MDA:"498",MNE:"499",MAR:"504",MOZ:"508",OMN:"512",NAM:"516",
+  NPL:"524",NLD:"528",NCL:"540",VUT:"548",NZL:"554",NIC:"558",NER:"562",
+  NGA:"566",NOR:"578",PAK:"586",PAN:"591",PNG:"598",PRY:"600",PER:"604",
+  PHL:"608",POL:"616",PRT:"620",GNB:"624",TLS:"626",PRI:"630",QAT:"634",
+  REU:"638",ROU:"642",RUS:"643",RWA:"646",KNA:"659",LCA:"662",VCT:"670",
+  SMR:"674",STP:"678",SAU:"682",SEN:"686",SRB:"688",SYC:"690",SLE:"694",
+  SGP:"702",SVK:"703",VNM:"704",SVN:"705",SOM:"706",ZAF:"710",ZWE:"716",
+  ESP:"724",SSD:"728",SDN:"729",ESH:"732",SUR:"740",SWZ:"748",SWE:"752",
+  CHE:"756",SYR:"760",TJK:"762",THA:"764",TGO:"768",TON:"776",TTO:"780",
+  ARE:"784",TUN:"788",TUR:"792",TKM:"795",TUV:"798",UGA:"800",UKR:"804",
+  MKD:"807",EGY:"818",GBR:"826",TZA:"834",USA:"840",BFA:"854",URY:"858",
+  UZB:"860",VEN:"862",WSM:"882",YEM:"887",ZMB:"894",MYT:"175",SXM:"534",
+  CUW:"531",ABW:"533",BES:"535",KOS:"926"
+};
+const NUM_TO_A3 = Object.fromEntries(Object.entries(A3_TO_NUM).map(([a,n])=>[n,a]));
+
+// ─── Indicator metadata ───────────────────────────────────────────────────────
+const INDICATORS = {
+  cbie_index:    { label: "CBIE Index",                  domain: [0,1] },
+  cbie_board:    { label: "Board independence",           domain: [0,1] },
+  cbie_policy:   { label: "Policy independence",          domain: [0,1] },
+  cbie_obj:      { label: "Objectives",                   domain: [0,1] },
+  cbie_lending:  { label: "Lending restrictions",         domain: [0,1] },
+  cbie_finindep: { label: "Financial independence",       domain: [0,1] },
+  cbie_report:   { label: "Reporting & accountability",   domain: [0,1] },
+  cbie_gmt:      { label: "GMT Index (normalized)",       domain: [0,1] },
+  cbie_cwn_lvau: { label: "CWN Index (unweighted)",       domain: [0,1] },
+  cbie_cwn_lvaw: { label: "CWN Index (weighted)",         domain: [0,1] }
+};
+
+// ─── State ────────────────────────────────────────────────────────────────────
+let geoData      = null;
+let cbiData      = {};   // { iso3: { year: { col: val, … } } }
+let countryNames = {};   // { iso3: "Country Name" }
+let currentYear  = 2023;
+let currentInd   = "cbie_index";
+let selectedIso  = null;
+let playTimer    = null;
+let colorScale   = d3.scaleSequential(d3.interpolateBlues).domain([0, 1]);
+
+// ─── Boot ─────────────────────────────────────────────────────────────────────
+Promise.all([
+  d3.json("https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json"),
+  d3.csv("dataset/CBIData_Romelli_2025.csv")
+]).then(([world, rows]) => {
+  geoData = world;
+
+  rows.forEach(r => {
+    const iso = r.iso_a3?.trim();
+    const yr  = +r.year;
+    if (!iso || isNaN(yr)) return;
+    if (!cbiData[iso]) cbiData[iso] = {};
+    cbiData[iso][yr] = {
+      cbie_index:    parseVal(r.cbie_index),
+      cbie_board:    parseVal(r.cbie_board),
+      cbie_policy:   parseVal(r.cbie_policy),
+      cbie_obj:      parseVal(r.cbie_obj),
+      cbie_lending:  parseVal(r.cbie_lending),
+      cbie_finindep: parseVal(r.cbie_finindep),
+      cbie_report:   parseVal(r.cbie_report),
+      cbie_gmt:      parseVal(r.cbie_gmt),
+      cbie_cwn_lvau: parseVal(r.cbie_cwn_lvau),
+      cbie_cwn_lvaw: parseVal(r.cbie_cwn_lvaw)
+    };
+    if (r.country && !countryNames[iso]) countryNames[iso] = r.country.trim();
+  });
+
+  drawMap();
+  drawLegend();
+  wireControls();
+  wireSearch();
+
+}).catch(err => {
+  document.getElementById("map-wrapper").innerHTML =
+    `<div class="alert alert-warning m-3">Could not load data: ${err.message}</div>`;
+});
+
+function parseVal(v) {
+  if (v === "" || v === null || v === undefined) return null;
+  const n = +v;
+  return isNaN(n) ? null : n;
+}
+
+// ─── Map ──────────────────────────────────────────────────────────────────────
+function drawMap() {
+  const svg  = d3.select("#world-map");
+  const proj = d3.geoNaturalEarth1().scale(153).translate([480, 250]);
+  const path = d3.geoPath().projection(proj);
+  const countries = topojson.feature(geoData, geoData.objects.countries);
+
+  svg.append("path")
+    .datum({type:"Sphere"})
+    .attr("fill","#d0e3f0")
+    .attr("d", path);
+
+  svg.append("path")
+    .datum(d3.geoGraticule()())
+    .attr("fill","none").attr("stroke","#c0cfe0").attr("stroke-width",0.3)
+    .attr("d", path);
+
+  svg.append("g").attr("id","country-group")
+    .selectAll("path")
+    .data(countries.features)
+    .join("path")
+      .attr("class","country")
+      .attr("d", path)
+      .attr("fill", d => countryColor(d))
+      .on("mousemove",  onHover)
+      .on("mouseleave", onLeave)
+      .on("click",      onClick);
+
+  svg.append("path")
+    .datum(topojson.mesh(geoData, geoData.objects.countries, (a,b) => a!==b))
+    .attr("fill","none").attr("stroke","white").attr("stroke-width",0.5)
+    .attr("d", path);
+}
+
+function getIso(d) {
+  return NUM_TO_A3[String(d.id).padStart(3,"0")];
+}
+
+function getValue(iso) {
+  return cbiData[iso]?.[currentYear]?.[currentInd] ?? null;
+}
+
+function countryColor(d) {
+  const iso = getIso(d);
+  if (!iso) return "#d8d8d8";
+  const v = getValue(iso);
+  return (v === null) ? "#d8d8d8" : colorScale(v);
+}
+
+function updateColors() {
+  d3.select("#country-group").selectAll(".country")
+    .attr("fill", d => countryColor(d));
+}
+
+// ─── Tooltip ──────────────────────────────────────────────────────────────────
+function onHover(event, d) {
+  const iso  = getIso(d);
+  const name = iso ? (countryNames[iso] || iso) : "Unknown";
+  const v    = iso ? getValue(iso) : null;
+  document.getElementById("tt-name").textContent = name;
+  document.getElementById("tt-val").textContent  =
+    (v !== null) ? `${INDICATORS[currentInd].label}: ${v.toFixed(3)}` : "No data";
+  const tip = document.getElementById("tooltip");
+  tip.style.display = "block";
+  tip.style.left    = (event.clientX + 14) + "px";
+  tip.style.top     = (event.clientY - 12) + "px";
+}
+function onLeave() { document.getElementById("tooltip").style.display = "none"; }
+
+// ─── Country click ────────────────────────────────────────────────────────────
+function onClick(event, d) {
+  const iso = getIso(d);
+  if (!iso || !cbiData[iso]) return;
+  d3.select("#country-group").selectAll(".country").classed("selected", false);
+  if (selectedIso === iso) { selectedIso = null; closeChart(); return; }
+  selectedIso = iso;
+  d3.select(event.currentTarget).classed("selected", true);
+  showChart(iso);
+}
+
+function selectCountryByIso(iso) {
+  d3.select("#country-group").selectAll(".country")
+    .classed("selected", n => getIso(n) === iso);
+  selectedIso = iso;
+  showChart(iso);
+}
+
+function closeChart() {
+  document.getElementById("chart-panel").style.display = "none";
+  d3.select("#country-group").selectAll(".country").classed("selected", false);
+  selectedIso = null;
+}
+
+// ─── Line chart ───────────────────────────────────────────────────────────────
+function showChart(iso) {
+  const name = countryNames[iso] || iso;
+  const raw  = cbiData[iso] || {};
+  const series = Object.entries(raw)
+    .map(([yr, vals]) => ({ year: +yr, value: vals[currentInd] }))
+    .filter(pt => pt.value !== null)
+    .sort((a,b) => a.year - b.year);
+  if (!series.length) return;
+
+  document.getElementById("chart-title").textContent    = name;
+  document.getElementById("chart-subtitle").textContent = INDICATORS[currentInd].label;
+  const panel = document.getElementById("chart-panel");
+  panel.style.display = "block";
+
+  const M = {top:18, right:24, bottom:36, left:46};
+  const W = 720 - M.left - M.right;
+  const H = 240 - M.top  - M.bottom;
+
+  const svg = d3.select("#line-chart");
+  svg.selectAll("*").remove();
+  const g = svg.append("g").attr("transform",`translate(${M.left},${M.top})`);
+
+  const x = d3.scaleLinear().domain(d3.extent(series, d=>d.year)).range([0,W]);
+  const y = d3.scaleLinear().domain([0,1]).range([H,0]);
+
+  // Grid
+  g.append("g").attr("class","grid")
+    .call(d3.axisLeft(y).tickSize(-W).tickFormat("").ticks(5));
+
+  // Area
+  g.append("path").datum(series)
+    .attr("fill","#0569b9").attr("fill-opacity",0.08)
+    .attr("d", d3.area().x(d=>x(d.year)).y0(H).y1(d=>y(d.value)));
+
+  // Line
+  g.append("path").datum(series)
+    .attr("fill","none").attr("stroke","#0569b9").attr("stroke-width",2)
+    .attr("d", d3.line().x(d=>x(d.year)).y(d=>y(d.value)));
+
+  // Current year marker
+  const cur = series.find(d => d.year === currentYear);
+  if (cur) {
+    g.append("line")
+      .attr("x1", x(cur.year)).attr("x2", x(cur.year))
+      .attr("y1", 0).attr("y2", H)
+      .attr("stroke","#e05c00").attr("stroke-width",1).attr("stroke-dasharray","3,3");
+    g.append("circle")
+      .attr("cx", x(cur.year)).attr("cy", y(cur.value)).attr("r",5)
+      .attr("fill","#e05c00").attr("stroke","white").attr("stroke-width",1.5);
+    g.append("text")
+      .attr("x", x(cur.year)+6).attr("y", y(cur.value)-6)
+      .attr("font-size",10).attr("fill","#e05c00")
+      .text(`${cur.year}: ${cur.value.toFixed(3)}`);
+  }
+
+  // Axes
+  g.append("g").attr("class","axis").attr("transform",`translate(0,${H})`)
+    .call(d3.axisBottom(x).tickFormat(d3.format("d")).ticks(Math.min(series.length,12)));
+  g.append("g").attr("class","axis")
+    .call(d3.axisLeft(y).ticks(5));
+
+  // Y label
+  g.append("text")
+    .attr("transform","rotate(-90)").attr("y",-38).attr("x",-H/2)
+    .attr("text-anchor","middle").attr("font-size",10).attr("fill","#666")
+    .text(INDICATORS[currentInd].label);
+
+  panel.scrollIntoView({behavior:"smooth", block:"nearest"});
+}
+
+// ─── Legend ───────────────────────────────────────────────────────────────────
+function drawLegend() {
+  const svg  = d3.select("#legend-svg");
+  const defs = svg.append("defs");
+  const grad = defs.append("linearGradient").attr("id","lgrd");
+  d3.range(0,11).forEach(i => {
+    grad.append("stop").attr("offset",`${i*10}%`).attr("stop-color", colorScale(i/10));
+  });
+  svg.append("rect").attr("x",6).attr("y",4).attr("width",178).attr("height",14)
+    .attr("rx",3).attr("fill","url(#lgrd)");
+  svg.append("text").attr("x",6).attr("y",34).attr("font-size",10).attr("fill","#555").text("0");
+  svg.append("text").attr("x",184).attr("y",34).attr("font-size",10).attr("fill","#555")
+    .attr("text-anchor","end").text("1");
+  svg.append("text").attr("x",95).attr("y",34).attr("font-size",10).attr("fill","#555")
+    .attr("text-anchor","middle").text("CBI Index (0–1 scale)");
+}
+
+// ─── Controls ─────────────────────────────────────────────────────────────────
+function wireControls() {
+  const slider   = document.getElementById("year-slider");
+  const yearDisp = document.getElementById("year-display");
+  const playBtn  = document.getElementById("play-btn");
+  const indSel   = document.getElementById("indicator-select");
+
+  slider.addEventListener("input", () => {
+    currentYear = +slider.value;
+    yearDisp.textContent = currentYear;
+    updateColors();
+    if (selectedIso) showChart(selectedIso);
+  });
+
+  playBtn.addEventListener("click", () => {
+    if (playTimer) {
+      clearInterval(playTimer); playTimer = null;
+      playBtn.innerHTML = "&#9654;";
+    } else {
+      if (+slider.value >= 2023) slider.value = 1923;
+      playBtn.innerHTML = "&#9646;&#9646;";
+      playTimer = setInterval(() => {
+        let yr = +slider.value + 1;
+        if (yr > 2023) {
+          clearInterval(playTimer); playTimer = null;
+          playBtn.innerHTML = "&#9654;"; return;
+        }
+        slider.value = yr;
+        currentYear  = yr;
+        yearDisp.textContent = yr;
+        updateColors();
+        if (selectedIso) showChart(selectedIso);
+      }, 150);
+    }
+  });
+
+  indSel.addEventListener("change", () => {
+    currentInd = indSel.value;
+    updateColors();
+    if (selectedIso) showChart(selectedIso);
+  });
+}
+
+// ─── Country search ───────────────────────────────────────────────────────────
+function wireSearch() {
+  const input = document.getElementById("country-search");
+  const box   = document.getElementById("suggestions-box");
+
+  input.addEventListener("input", () => {
+    const q = input.value.trim().toLowerCase();
+    box.innerHTML = ""; box.style.display = "none";
+    if (!q) return;
+    const hits = Object.entries(countryNames)
+      .filter(([,n]) => n.toLowerCase().includes(q)).slice(0,8);
+    if (!hits.length) return;
+    hits.forEach(([iso, name]) => {
+      const div = document.createElement("div");
+      div.className = "sug-item";
+      div.textContent = name;
+      div.addEventListener("click", () => {
+        input.value = name;
+        box.style.display = "none";
+        selectCountryByIso(iso);
+      });
+      box.appendChild(div);
+    });
+    box.style.display = "block";
+  });
+
+  document.addEventListener("click", e => {
+    if (!e.target.closest("#country-search") && !e.target.closest("#suggestions-box"))
+      box.style.display = "none";
+  });
+}
+</script>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-pprn3073KE6tl6bjs2QrFaJGz5/SUsLqktiwsUTF55Jfv3qYSDhgCecCxMW52nD2" crossorigin="anonymous"></script>
+</body>
+</html>
