@@ -140,7 +140,12 @@
       };
       const NUM_TO_A3 = Object.fromEntries(Object.entries(A3_TO_NUM).map(([a,n])=>[n,a]));
 
-      // Step 1: draw the world map immediately (grey countries)
+      // 2023 CBIE values — embedded, no fetch needed
+      const vals = {"AFG":0.87,"AGO":0.732,"AIA":0.549,"ALB":0.791,"ARE":0.685,"ARG":0.557,"ATG":0.549,"AUS":0.424,"AUT":0.912,"AZE":0.732,"BDI":0.804,"BEL":0.912,"BEN":0.811,"BFA":0.811,"BGD":0.539,"BGR":0.82,"BHR":0.514,"BHS":0.719,"BIH":0.898,"BLR":0.619,"BOL":0.837,"BRA":0.749,"BRN":0.704,"BWA":0.579,"CAF":0.854,"CAN":0.604,"CHE":0.834,"CHL":0.746,"CHN":0.659,"CIV":0.811,"CMR":0.854,"COD":0.881,"COG":0.854,"COL":0.757,"COM":0.439,"CRI":0.827,"CUB":0.354,"CYP":0.895,"CZE":0.795,"DEU":0.912,"DMA":0.549,"DNK":0.606,"DOM":0.835,"DZA":0.629,"ECU":0.672,"EGY":0.64,"ESP":0.895,"EST":0.912,"ETH":0.494,"FIN":0.912,"FRA":0.912,"GAB":0.854,"GBR":0.441,"GEO":0.847,"GHA":0.694,"GIN":0.652,"GMB":0.692,"GNB":0.811,"GNQ":0.854,"GRC":0.895,"GRD":0.549,"GTM":0.625,"HRV":0.895,"HTI":0.365,"HUN":0.875,"IDN":0.758,"IND":0.595,"IRL":0.895,"IRN":0.448,"IRQ":0.733,"ISL":0.696,"ITA":0.895,"JAM":0.661,"JOR":0.659,"JPN":0.366,"KAZ":0.717,"KEN":0.638,"KGZ":0.736,"KHM":0.729,"KNA":0.549,"KOR":0.679,"KWT":0.564,"LAO":0.52,"LBN":0.437,"LBR":0.716,"LBY":0.574,"LCA":0.549,"LKA":0.75,"LTU":0.912,"LUX":0.912,"LVA":0.912,"MAC":0.271,"MAR":0.768,"MDA":0.861,"MDV":0.509,"MEX":0.648,"MKD":0.83,"MLI":0.811,"MLT":0.912,"MMR":0.765,"MNE":0.79,"MNG":0.731,"MRT":0.644,"MUS":0.733,"MWI":0.742,"MYS":0.563,"NAM":0.637,"NER":0.811,"NGA":0.644,"NLD":0.895,"NOR":0.725,"NPL":0.652,"NZL":0.463,"OMN":0.619,"PAK":0.74,"PAN":0.458,"PER":0.804,"PHL":0.639,"POL":0.848,"PRT":0.895,"PRY":0.629,"QAT":0.607,"ROU":0.796,"RUS":0.566,"RWA":0.595,"SAU":0.5,"SEN":0.811,"SGP":0.544,"SLE":0.673,"SOM":0.678,"SVK":0.895,"SVN":0.895,"SWE":0.855,"SYC":0.594,"TCD":0.854,"TGO":0.811,"THA":0.435,"TKM":0.41,"TTO":0.535,"TUN":0.721,"TUR":0.801,"TWN":0.454,"TZA":0.708,"UGA":0.467,"UKR":0.893,"URY":0.71,"USA":0.614,"UZB":0.862,"VCT":0.549,"VEN":0.816,"VNM":0.301,"YEM":0.715,"ZAF":0.506,"ZMB":0.637,"ZWE":0.534};
+      const allVals = Object.values(vals);
+      const color = d3.scaleSequential(d3.interpolateBlues)
+        .domain([d3.min(allVals) * 0.8, d3.max(allVals)]);
+
       d3.json("https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json").then(world => {
         const svg  = d3.select("#preview-map");
         const proj = d3.geoNaturalEarth1().scale(153).translate([480, 240]);
@@ -150,30 +155,24 @@
         svg.append("path").datum({type:"Sphere"})
           .attr("fill","#dce3ea").attr("d", path);
 
-        svg.append("g").attr("id","preview-countries")
+        // Single pass: compute ISO and apply color immediately
+        svg.append("g")
           .selectAll("path")
           .data(countries.features).join("path")
-          .attr("class","pcountry")
           .attr("stroke","white").attr("stroke-width",0.5)
-          .attr("fill","#b0bec5");   // visible grey until data loads
+          .attr("fill", d => {
+            const raw = d.id;
+            if (raw == null) return "#b0bec5";
+            const num = String(+raw).padStart(3,"0");
+            const iso = NUM_TO_A3[num];
+            const v   = iso != null ? vals[iso] : null;
+            return v != null ? color(v) : "#b0bec5";
+          });
 
         svg.append("path")
           .datum(topojson.mesh(world, world.objects.countries, (a,b)=>a!==b))
           .attr("fill","none").attr("stroke","white").attr("stroke-width",0.5)
           .attr("d", path);
-
-        // Step 2: apply 2023 CBIE colors (data embedded — no fetch needed)
-        const vals = {"AFG":0.87,"AGO":0.732,"AIA":0.549,"ALB":0.791,"ARE":0.685,"ARG":0.557,"ATG":0.549,"AUS":0.424,"AUT":0.912,"AZE":0.732,"BDI":0.804,"BEL":0.912,"BEN":0.811,"BFA":0.811,"BGD":0.539,"BGR":0.82,"BHR":0.514,"BHS":0.719,"BIH":0.898,"BLR":0.619,"BOL":0.837,"BRA":0.749,"BRN":0.704,"BWA":0.579,"CAF":0.854,"CAN":0.604,"CHE":0.834,"CHL":0.746,"CHN":0.659,"CIV":0.811,"CMR":0.854,"COD":0.881,"COG":0.854,"COL":0.757,"COM":0.439,"CRI":0.827,"CUB":0.354,"CYP":0.895,"CZE":0.795,"DEU":0.912,"DMA":0.549,"DNK":0.606,"DOM":0.835,"DZA":0.629,"ECU":0.672,"EGY":0.64,"ESP":0.895,"EST":0.912,"ETH":0.494,"FIN":0.912,"FRA":0.912,"GAB":0.854,"GBR":0.441,"GEO":0.847,"GHA":0.694,"GIN":0.652,"GMB":0.692,"GNB":0.811,"GNQ":0.854,"GRC":0.895,"GRD":0.549,"GTM":0.625,"HRV":0.895,"HTI":0.365,"HUN":0.875,"IDN":0.758,"IND":0.595,"IRL":0.895,"IRN":0.448,"IRQ":0.733,"ISL":0.696,"ITA":0.895,"JAM":0.661,"JOR":0.659,"JPN":0.366,"KAZ":0.717,"KEN":0.638,"KGZ":0.736,"KHM":0.729,"KNA":0.549,"KOR":0.679,"KWT":0.564,"LAO":0.52,"LBN":0.437,"LBR":0.716,"LBY":0.574,"LCA":0.549,"LKA":0.75,"LTU":0.912,"LUX":0.912,"LVA":0.912,"MAC":0.271,"MAR":0.768,"MDA":0.861,"MDV":0.509,"MEX":0.648,"MKD":0.83,"MLI":0.811,"MLT":0.912,"MMR":0.765,"MNE":0.79,"MNG":0.731,"MRT":0.644,"MUS":0.733,"MWI":0.742,"MYS":0.563,"NAM":0.637,"NER":0.811,"NGA":0.644,"NLD":0.895,"NOR":0.725,"NPL":0.652,"NZL":0.463,"OMN":0.619,"PAK":0.74,"PAN":0.458,"PER":0.804,"PHL":0.639,"POL":0.848,"PRT":0.895,"PRY":0.629,"QAT":0.607,"ROU":0.796,"RUS":0.566,"RWA":0.595,"SAU":0.5,"SEN":0.811,"SGP":0.544,"SLE":0.673,"SOM":0.678,"SVK":0.895,"SVN":0.895,"SWE":0.855,"SYC":0.594,"TCD":0.854,"TGO":0.811,"THA":0.435,"TKM":0.41,"TTO":0.535,"TUN":0.721,"TUR":0.801,"TWN":0.454,"TZA":0.708,"UGA":0.467,"UKR":0.893,"URY":0.71,"USA":0.614,"UZB":0.862,"VCT":0.549,"VEN":0.816,"VNM":0.301,"YEM":0.715,"ZAF":0.506,"ZMB":0.637,"ZWE":0.534};
-        const allVals = Object.values(vals);
-        const color = d3.scaleSequential(d3.interpolateBlues)
-          .domain([d3.min(allVals) * 0.8, d3.max(allVals)]);
-        d3.select("#preview-countries").selectAll(".pcountry")
-          .attr("fill", d => {
-            const numId = String(typeof d.id === "number" ? d.id : parseInt(d.id, 10)).padStart(3,"0");
-            const iso = NUM_TO_A3[numId];
-            const v   = iso ? vals[iso] : null;
-            return (v != null) ? color(v) : "#b0bec5";
-          });
       });
     })();
     </script>
