@@ -65,14 +65,19 @@
         #play-btn:hover { background: #0455a0; }
         #year-slider { accent-color: #0569b9; }
 
+        #mapchart-row { display: flex; gap: 16px; align-items: flex-start; flex-wrap: wrap; }
+        #mapchart-row .mc-left  { flex: 1 1 520px; min-width: 320px; }
+        #mapchart-row .mc-right { flex: 0 0 360px; max-width: 100%; }
+        @media (max-width: 800px) { #mapchart-row .mc-right { flex-basis: 100%; } }
+
         #chart-panel {
-            display: none;
             background: #f8f9fa;
             border: 1px solid #e9ecef;
             border-radius: 8px;
             padding: 14px 16px;
-            margin-top: 14px;
         }
+        #chart-placeholder { color: #6c757d; font-size: 13.5px; line-height: 1.5; padding: 8px 2px; }
+        .slider-hint { color: #6c757d; font-size: 13px; margin-bottom: 6px; }
         #line-chart { width: 100%; overflow: visible; }
 
         #legend-svg {
@@ -189,6 +194,7 @@
         </div>
 
         <!--- Year slider --->
+        <div class="slider-hint">Drag the year slider or press &#9654; to watch the evolution.</div>
         <div class="d-flex align-items-center gap-3">
             <button id="play-btn" title="Play / Pause">&#9654;</button>
             <span class="year-badge" id="year-display">2023</span>
@@ -196,26 +202,34 @@
         </div>
     </div>
 
-    <!--- Map --->
-    <div id="map-wrapper">
-        <div id="tooltip">
-            <div class="tt-name" id="tt-name"></div>
-            <div class="tt-val"  id="tt-val"></div>
-        </div>
-        <svg id="world-map" viewBox="0 0 960 500" preserveAspectRatio="xMidYMid meet"></svg>
-        <svg id="legend-svg" width="190" height="46"></svg>
-    </div>
-
-    <!--- Time-series chart panel --->
-    <div id="chart-panel">
-        <div class="d-flex justify-content-between align-items-start mb-2">
-            <div>
-                <h5 id="chart-title" class="mb-0" style="color:#0569b9;"></h5>
-                <small id="chart-subtitle" class="text-muted"></small>
+    <!--- Map + evolution chart, side by side --->
+    <div id="mapchart-row">
+      <div class="mc-left">
+        <div id="map-wrapper">
+            <div id="tooltip">
+                <div class="tt-name" id="tt-name"></div>
+                <div class="tt-val"  id="tt-val"></div>
             </div>
-            <button onclick="closeChart()" class="btn btn-sm btn-outline-secondary">&#10005; Close</button>
+            <svg id="world-map" viewBox="0 0 960 500" preserveAspectRatio="xMidYMid meet"></svg>
+            <svg id="legend-svg" width="190" height="46"></svg>
         </div>
-        <svg id="line-chart" viewBox="0 0 720 240" preserveAspectRatio="xMidYMid meet"></svg>
+      </div>
+      <div class="mc-right">
+        <!--- Time-series chart panel (always visible; placeholder until a country is picked) --->
+        <div id="chart-panel">
+            <div id="chart-placeholder">Click a country on the map — or use the search — to see its historical trend in central bank independence.</div>
+            <div id="chart-content" style="display:none;">
+                <div class="d-flex justify-content-between align-items-start mb-2">
+                    <div>
+                        <h5 id="chart-title" class="mb-0" style="color:#0569b9;"></h5>
+                        <small id="chart-subtitle" class="text-muted"></small>
+                    </div>
+                    <button onclick="closeChart()" class="btn btn-sm btn-outline-secondary">&#10005; Close</button>
+                </div>
+                <svg id="line-chart" viewBox="0 0 360 300" preserveAspectRatio="xMidYMid meet"></svg>
+            </div>
+        </div>
+      </div>
     </div>
 
 </div>
@@ -425,7 +439,8 @@ function selectCountryByIso(iso) {
 }
 
 function closeChart() {
-  document.getElementById("chart-panel").style.display = "none";
+  document.getElementById("chart-content").style.display = "none";
+  document.getElementById("chart-placeholder").style.display = "block";
   d3.select("#country-group").selectAll(".country").classed("selected", false);
   selectedIso = null;
 }
@@ -442,12 +457,12 @@ function showChart(iso) {
 
   document.getElementById("chart-title").textContent    = name;
   document.getElementById("chart-subtitle").textContent = INDICATORS[currentInd].label;
-  const panel = document.getElementById("chart-panel");
-  panel.style.display = "block";
+  document.getElementById("chart-placeholder").style.display = "none";
+  document.getElementById("chart-content").style.display = "block";
 
-  const M = {top:18, right:24, bottom:36, left:46};
-  const W = 720 - M.left - M.right;
-  const H = 240 - M.top  - M.bottom;
+  const M = {top:16, right:16, bottom:28, left:34};
+  const W = 360 - M.left - M.right;
+  const H = 300 - M.top  - M.bottom;
 
   const svg = d3.select("#line-chart");
   svg.selectAll("*").remove();
@@ -480,8 +495,10 @@ function showChart(iso) {
     g.append("circle")
       .attr("cx", x(cur.year)).attr("cy", y(cur.value)).attr("r",5)
       .attr("fill","#e05c00").attr("stroke","white").attr("stroke-width",1.5);
+    const nearRight = x(cur.year) > W * 0.6;
     g.append("text")
-      .attr("x", x(cur.year)+6).attr("y", y(cur.value)-6)
+      .attr("x", x(cur.year) + (nearRight ? -6 : 6)).attr("y", y(cur.value)-6)
+      .attr("text-anchor", nearRight ? "end" : "start")
       .attr("font-size",10).attr("fill","#e05c00")
       .text(`${cur.year}: ${cur.value.toFixed(3)}`);
   }
@@ -494,11 +511,9 @@ function showChart(iso) {
 
   // Y label
   g.append("text")
-    .attr("transform","rotate(-90)").attr("y",-38).attr("x",-H/2)
+    .attr("transform","rotate(-90)").attr("y",-26).attr("x",-H/2)
     .attr("text-anchor","middle").attr("font-size",10).attr("fill","#666")
     .text(INDICATORS[currentInd].label);
-
-  panel.scrollIntoView({behavior:"smooth", block:"nearest"});
 }
 
 // ─── Legend ───────────────────────────────────────────────────────────────────
