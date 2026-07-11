@@ -503,9 +503,13 @@ function showChart(iso) {
       .text(`${cur.year}: ${cur.value.toFixed(3)}`);
   }
 
-  // Axes
+  // Axes — x ticks on the decade (every 10 yrs) to avoid overlapping labels in the narrow panel;
+  // fall back to the series endpoints for short spans that contain no round decade.
+  const [yr0, yr1] = d3.extent(series, d => d.year);
+  const decadeTicks = d3.range(Math.ceil(yr0/10)*10, yr1 + 1, 10);
+  const xTicks = decadeTicks.length >= 2 ? decadeTicks : [yr0, yr1];
   g.append("g").attr("class","axis").attr("transform",`translate(0,${H})`)
-    .call(d3.axisBottom(x).tickFormat(d3.format("d")).ticks(Math.min(series.length,12)));
+    .call(d3.axisBottom(x).tickValues(xTicks).tickFormat(d3.format("d")));
   g.append("g").attr("class","axis")
     .call(d3.axisLeft(y).ticks(5));
 
